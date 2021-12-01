@@ -3,6 +3,16 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "paths": {
+      "data-viewer": [
+        "dist/data-viewer/data-viewer",
+        "dist/data-viewer"
+      ],
+      "nav": [
+        "dist/nav/nav",
+        "dist/nav"
+      ]
+    },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,

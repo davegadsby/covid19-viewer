@@ -105,6 +105,274 @@
           }
         }
       }
+    },
+    "data-viewer": {
+      "projectType": "library",
+      "root": "projects/data-viewer",
+      "sourceRoot": "projects/data-viewer/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/data-viewer/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/data-viewer/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/data-viewer/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/data-viewer/src/test.ts",
+            "tsConfig": "projects/data-viewer/tsconfig.spec.json",
+            "karmaConfig": "projects/data-viewer/karma.conf.js"
+          }
+        }
+      }
+    },
+    "nav": {
+      "projectType": "library",
+      "root": "projects/nav",
+      "sourceRoot": "projects/nav/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/nav/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/nav/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/nav/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/nav/src/test.ts",
+            "tsConfig": "projects/nav/tsconfig.spec.json",
+            "karmaConfig": "projects/nav/karma.conf.js"
+          }
+        }
+      }
+    },
+    "nav-harness": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "root": "projects/nav-harness",
+      "sourceRoot": "projects/nav-harness/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/nav-harness",
+            "index": "projects/nav-harness/src/index.html",
+            "main": "projects/nav-harness/src/main.ts",
+            "polyfills": "projects/nav-harness/src/polyfills.ts",
+            "tsConfig": "projects/nav-harness/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/nav-harness/src/favicon.ico",
+              "projects/nav-harness/src/assets"
+            ],
+            "styles": [
+              "projects/nav-harness/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/nav-harness/src/environments/environment.ts",
+                  "with": "projects/nav-harness/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "nav-harness:build:production"
+            },
+            "development": {
+              "browserTarget": "nav-harness:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "nav-harness:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/nav-harness/src/test.ts",
+            "polyfills": "projects/nav-harness/src/polyfills.ts",
+            "tsConfig": "projects/nav-harness/tsconfig.spec.json",
+            "karmaConfig": "projects/nav-harness/karma.conf.js",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/nav-harness/src/favicon.ico",
+              "projects/nav-harness/src/assets"
+            ],
+            "styles": [
+              "projects/nav-harness/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    },
+    "data-viewer-harness": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "root": "projects/data-viewer-harness",
+      "sourceRoot": "projects/data-viewer-harness/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/data-viewer-harness",
+            "index": "projects/data-viewer-harness/src/index.html",
+            "main": "projects/data-viewer-harness/src/main.ts",
+            "polyfills": "projects/data-viewer-harness/src/polyfills.ts",
+            "tsConfig": "projects/data-viewer-harness/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/data-viewer-harness/src/favicon.ico",
+              "projects/data-viewer-harness/src/assets"
+            ],
+            "styles": [
+              "projects/data-viewer-harness/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/data-viewer-harness/src/environments/environment.ts",
+                  "with": "projects/data-viewer-harness/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "data-viewer-harness:build:production"
+            },
+            "development": {
+              "browserTarget": "data-viewer-harness:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "data-viewer-harness:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/data-viewer-harness/src/test.ts",
+            "polyfills": "projects/data-viewer-harness/src/polyfills.ts",
+            "tsConfig": "projects/data-viewer-harness/tsconfig.spec.json",
+            "karmaConfig": "projects/data-viewer-harness/karma.conf.js",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/data-viewer-harness/src/favicon.ico",
+              "projects/data-viewer-harness/src/assets"
+            ],
+            "styles": [
+              "projects/data-viewer-harness/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        }
+      }
     }
   },
   "defaultProject": "covid19-viewer"
