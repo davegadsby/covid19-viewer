@@ -54,10 +54,38 @@ export class DataViewerComponent implements OnInit {
           borderColor: '#00c4b6',
           borderWidth: 0.5,
           pointBackgroundColor: '#00c4b6',
-          showLine: false,
+          showLine: true,
         }
-          this.chart.data.datasets = [dataSeries];
-          this.chart.update();
+        const diffData: any[] = [];
+
+        countries[0].results.forEach((r: any, index: number, results: any[]) => {
+
+          if (index === 0) {
+            diffData.push({
+              x: r.date,
+              y: r.confirmed
+            });
+          } else {
+            diffData.push({
+              x: r.date,
+              y: r.confirmed - results[index - 1].confirmed
+            });
+          }
+        });
+
+        const diffDataSeries = {
+          data: diffData,
+          label: countries[0].name,
+          borderColor: 'rgba(0,0,0, 0.5)',
+          pointBackgroundColor: '#00c4b6',
+          showLine: true,
+          pointRadius: 0.5,
+          borderWidth: 1,
+          backgroundColor: 'rgba(0,0,0, 0.1)'
+        }
+
+        this.chart.data.datasets = [diffDataSeries];
+        this.chart.update();
       })
   }
 
@@ -68,7 +96,7 @@ export class DataViewerComponent implements OnInit {
     let ctx = this.chartElement?.nativeElement;
     ctx = ctx.getContext('2d');
     this.chart = new Chart(ctx, {
-      type: 'scatter',
+      type: 'line',
       data: {
         datasets: []
       },
@@ -79,7 +107,7 @@ export class DataViewerComponent implements OnInit {
         responsive: true,
         scales: {
           xAxes: [{
-            type: 'time'
+            type: 'time',
           }]
         }
       }
