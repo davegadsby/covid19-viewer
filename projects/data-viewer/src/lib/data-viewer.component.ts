@@ -5,6 +5,7 @@ import { map } from 'rxjs';
 import { Chart } from 'chart.js';
 import { ActivatedRoute } from '@angular/router';
 import { fadeInAnimation } from './animations';
+import { DateTime } from 'luxon';
 
 const GET_COUNTRY_DATA = gql`
 query GetCountryData($country: String!) {
@@ -57,10 +58,12 @@ export class DataViewerComponent implements OnInit {
         const weekAverage: any[] = [];
 
         countries[0].results.forEach((r: any, index: number, results: any[]) => {
-
+         
+          const date = DateTime.fromFormat(r.date, "yyyy-M-d").valueOf();
+         
           if (index === 0) {
             diffData.push({
-              x: r.date,
+              x: date,
               y: r.confirmed
             });
           } else {
@@ -68,7 +71,7 @@ export class DataViewerComponent implements OnInit {
             const newCases = diff > 0 ? diff : 0;
 
             diffData.push({
-              x: r.date,
+              x: date,
               y: newCases
             });
           }
@@ -82,8 +85,8 @@ export class DataViewerComponent implements OnInit {
             const ind = index + i;
 
             if (ind >= 0) {
-                total = total + diffData[ind].y
-                count++;
+              total = total + diffData[ind].y
+              count++;
             }
           }
           weekAverage.push(({
@@ -94,19 +97,21 @@ export class DataViewerComponent implements OnInit {
         });
 
         const diffDataSeries = {
-          data: diffData,
           type: 'bar',
+          data: diffData,
+          spanGaps: false,
           label: 'Daily cases',
           borderColor: 'rgba(0,0,0, 0.5)',
           pointBackgroundColor: 'rgba(255,0,0, 0.5)',
           showLine: false,
           pointRadius: 0,
           borderWidth: 0,
-          backgroundColor: 'rgba(255,0,0, 0.2)',
+          backgroundColor: 'rgba(0,0,0, 0.2)',
         }
 
         const weekAverageDataSeries = {
           data: weekAverage,
+          spanGaps: true,
           label: '7 day average',
           borderColor: 'rgba(255,0,0, 0.8)',
           pointBackgroundColor: 'rgba(255,0,0, 0.8)',
@@ -127,7 +132,6 @@ export class DataViewerComponent implements OnInit {
 
   private createPlot() {
     console.log('creating plot');
-    Chart.defaults.global.defaultFontColor = '#AAA';
 
     let ctx = this.chartElement?.nativeElement;
     ctx = ctx.getContext('2d');
@@ -137,17 +141,18 @@ export class DataViewerComponent implements OnInit {
         datasets: []
       },
       options: {
-        animation: {
-          duration: 300
-        },
-        maintainAspectRatio: true,
-        responsive: true,
         scales: {
-          xAxes: [{
+          x: {
             type: 'time',
-            gridLines: {display: false}
-          }]
-        }
+            time: {
+              //unit: 'day',
+              tooltipFormat: 'DD'
+            }
+          },
+          y: {
+
+          }
+        },
       }
     });
   }
