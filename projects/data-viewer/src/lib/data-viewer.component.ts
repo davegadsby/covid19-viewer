@@ -3,6 +3,20 @@ import { Apollo } from 'apollo-angular';
 import gql from "graphql-tag";
 import { map } from 'rxjs';
 import { Chart } from 'chart.js';
+import { ActivatedRoute, Router } from '@angular/router';
+
+const GET_COUNTRY_DATA = gql`
+query GetCountryData($country: String!) {
+countries(names: [$country]) {
+  name
+  results {
+    date
+    label: date
+    confirmed
+  }
+}
+}
+`
 
 @Component({
   selector: 'lib-data-viewer',
@@ -19,26 +33,25 @@ export class DataViewerComponent implements OnInit {
   @ViewChild('chart', { static: true }) chartElement?: ElementRef;
   chart!: Chart;
 
-  constructor(private apollo: Apollo) { }
 
-  ngOnInit(): void {
 
-    this.createPlot();
+  constructor(private apollo: Apollo, private route: ActivatedRoute) {
+    this.route.params.subscribe(params => {
+      const country = params['country'];
+      console.log('country', country);
+      if (country) {
+        this.plot(country);
+      }
+    })
+  }
 
+  private plot(country: string) {
     this.apollo
       .watchQuery({
-        query: gql`
-{
-  countries(names: ["United Kingdom"]) {
-    name
-    results {
-      date
-      label: date
-      confirmed
-    }
-  }
-}
-`,
+        query: GET_COUNTRY_DATA,
+        variables: {
+          country: country
+        }
       })
       .valueChanges.pipe(map((payload: any) => payload.data.countries)).subscribe((countries: any) => {
         console.log('got data', countries);
@@ -57,6 +70,7 @@ export class DataViewerComponent implements OnInit {
           showLine: true,
         }
         const diffData: any[] = [];
+        const weekAverage: any[] = [];
 
         countries[0].results.forEach((r: any, index: number, results: any[]) => {
 
@@ -66,15 +80,38 @@ export class DataViewerComponent implements OnInit {
               y: r.confirmed
             });
           } else {
+            const diff = r.confirmed - results[index - 1].confirmed;
+            const newCases = diff > 0 ? diff : 0;
+
             diffData.push({
               x: r.date,
-              y: r.confirmed - results[index - 1].confirmed
+              y: newCases
             });
           }
         });
 
+
+        diffData.forEach((element: any, index: number) => {
+
+          let count = 0;
+          let total = 0;
+          for (let i = -6; i <= 0; i++) {
+            const ind = index + i;
+
+            if (ind >= 0) {
+                total = total + diffData[ind].y
+                count++;
+            }
+          }
+          weekAverage.push(({
+            x: element.x,
+            y: count > 0 ? total / count : 0
+          })
+          );
+        });
+
         const diffDataSeries = {
-          data: diffData,
+          data: weekAverage,
           label: countries[0].name,
           borderColor: 'rgba(0,0,0, 0.5)',
           pointBackgroundColor: '#00c4b6',
@@ -87,6 +124,13 @@ export class DataViewerComponent implements OnInit {
         this.chart.data.datasets = [diffDataSeries];
         this.chart.update();
       })
+  }
+
+  ngOnInit(): void {
+
+    this.createPlot();
+
+
   }
 
   private createPlot() {

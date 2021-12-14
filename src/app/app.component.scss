@@ -1,0 +1,15 @@
+:host{
+    display: flex;
+    flex-direction: row;
+}
+#id {
+    width: 20rem;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#data-viewer {
+    width: calc(100vw - 20rem);
+    height: 100vh;
+    overflow: hidden;
+}
