@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 import { map } from 'rxjs';
 import { Chart } from 'chart.js';
 import { ActivatedRoute } from '@angular/router';
+import { fadeInAnimation } from './animations';
 
 const GET_COUNTRY_DATA = gql`
 query GetCountryData($country: String!) {
@@ -21,7 +22,12 @@ countries(names: [$country]) {
 @Component({
   selector: 'lib-data-viewer',
   templateUrl: 'data-viewer.component.html',
-  styleUrls: ['data-viewer.component.scss']
+  styleUrls: ['data-viewer.component.scss'],
+  // make fade in animation available to this component
+  animations: [fadeInAnimation],
+
+  // attach the fade in animation to the host (root) element of this component
+  host: { '[@fadeInAnimation]': '' }
 })
 export class DataViewerComponent implements OnInit {
 
@@ -108,9 +114,9 @@ export class DataViewerComponent implements OnInit {
         const diffDataSeries = {
           data: diffData,
           type: 'bar',
-          label: 'daily cases',
+          label: 'Daily cases',
           borderColor: 'rgba(0,0,0, 0.5)',
-          pointBackgroundColor: '#00c4b6',
+          pointBackgroundColor: 'rgba(255,0,0, 0.5)',
           showLine: false,
           pointRadius: 0,
           borderWidth: 0,
@@ -121,7 +127,7 @@ export class DataViewerComponent implements OnInit {
           data: weekAverage,
           label: '7 day average',
           borderColor: 'rgba(255,0,0, 0.8)',
-          pointBackgroundColor: '#00c4b6',
+          pointBackgroundColor: 'rgba(255,0,0, 0.8)',
           showLine: true,
           pointRadius: 0,
           borderWidth: 2,
@@ -154,9 +160,13 @@ export class DataViewerComponent implements OnInit {
 
       // options for all datasets
       options: {
+        animation: {
+          duration: 300
+        },
         scales: {
           xAxes: [{
             type: 'time',
+            gridLines: {display: false}
           }]
         }
       }

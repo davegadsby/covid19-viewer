@@ -1,5 +1,8 @@
-<mat-selection-list #countries [multiple]="false" (selectionChange)="onSelectCountry($event)">
-  <mat-list-option *ngFor="let country of countries$ | async" [value]="country">
-    {{country}}
-  </mat-list-option>
-</mat-selection-list>
+<div class="nav">
+  <h2 class="title">Cases by country:</h2>
+  <mat-selection-list #countries [multiple]="false" (selectionChange)="onSelectCountry($event)">
+    <mat-list-option *ngFor="let country of countries$ | async" [value]="country">
+      {{country}}
+    </mat-list-option>
+  </mat-selection-list>
+</div>
