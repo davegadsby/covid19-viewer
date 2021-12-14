@@ -5,6 +5,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { HttpClientModule } from '@angular/common/http';
+import {MatCardModule} from '@angular/material/card';
 
 const uri = 'https://covid19-graphql.now.sh/'; // <-- add the URL of the GraphQL server here
 export function createApollo(httpLink: HttpLink) {
@@ -15,9 +16,7 @@ export function createApollo(httpLink: HttpLink) {
 }
 
 const routes: Routes = [
-  
   { path: '',  component: DataViewerComponent}
-
 ];
 
 @NgModule({
@@ -33,7 +32,7 @@ const routes: Routes = [
   ],
   imports: [
     RouterModule.forChild(routes),
-    HttpLinkModule, ApolloModule, HttpClientModule
+    HttpLinkModule, ApolloModule, HttpClientModule,     MatCardModule
 
   ],
   exports: [

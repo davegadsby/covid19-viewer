@@ -23,10 +23,7 @@ countries(names: [$country]) {
   selector: 'lib-data-viewer',
   templateUrl: 'data-viewer.component.html',
   styleUrls: ['data-viewer.component.scss'],
-  // make fade in animation available to this component
   animations: [fadeInAnimation],
-
-  // attach the fade in animation to the host (root) element of this component
   host: { '[@fadeInAnimation]': '' }
 })
 export class DataViewerComponent implements OnInit {
@@ -34,7 +31,6 @@ export class DataViewerComponent implements OnInit {
   @ViewChild('chart', { static: true }) chartElement?: ElementRef;
   chart!: Chart;
   country!: string;
-
 
   constructor(private apollo: Apollo, private route: ActivatedRoute) {
     this.route.params.subscribe(params => {
@@ -57,19 +53,6 @@ export class DataViewerComponent implements OnInit {
       .valueChanges.pipe(map((payload: any) => payload.data.countries)).subscribe((countries: any) => {
         console.log('got data', countries);
 
-        const dataSeries = {
-          data: countries[0].results.map((r: any) => {
-            return {
-              x: r.date,
-              y: r.confirmed
-            };
-          }),
-          label: countries[0].name,
-          borderColor: '#00c4b6',
-          borderWidth: 0.5,
-          pointBackgroundColor: '#00c4b6',
-          showLine: true,
-        }
         const diffData: any[] = [];
         const weekAverage: any[] = [];
 
@@ -90,7 +73,6 @@ export class DataViewerComponent implements OnInit {
             });
           }
         });
-
 
         diffData.forEach((element: any, index: number) => {
 
@@ -120,7 +102,7 @@ export class DataViewerComponent implements OnInit {
           showLine: false,
           pointRadius: 0,
           borderWidth: 0,
-          backgroundColor: 'rgba(255,0,0, 0.2)'
+          backgroundColor: 'rgba(255,0,0, 0.2)',
         }
 
         const weekAverageDataSeries = {
@@ -140,10 +122,7 @@ export class DataViewerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.createPlot();
-
-
   }
 
   private createPlot() {
@@ -157,12 +136,12 @@ export class DataViewerComponent implements OnInit {
       data: {
         datasets: []
       },
-
-      // options for all datasets
       options: {
         animation: {
           duration: 300
         },
+        maintainAspectRatio: true,
+        responsive: true,
         scales: {
           xAxes: [{
             type: 'time',
@@ -172,5 +151,4 @@ export class DataViewerComponent implements OnInit {
       }
     });
   }
-
 }
