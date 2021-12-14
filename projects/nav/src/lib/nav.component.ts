@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatOption } from '@angular/material/core';
+import { MatSelectionListChange } from '@angular/material/list';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
@@ -8,9 +8,8 @@ import { map, Observable } from 'rxjs';
 @Component({
   selector: 'lib-nav',
   template: `
-    <mat-selection-list #countries [multiple]="false">
-    <mat-list-option *ngFor="let country of countries$ | async" 
-      [value]="country" [routerLink]="[{outlets: {'data-viewer' : ['cases/{{country}}']}}]" routerLinkActive="active">
+    <mat-selection-list #countries [multiple]="false" (selectionChange)="onSelectCountry($event)">
+    <mat-list-option *ngFor="let country of countries$ | async" [value]="country">
       {{country}}
     </mat-list-option>
   </mat-selection-list>
@@ -22,7 +21,8 @@ export class NavComponent implements OnInit {
 
   countries$!: Observable<string[]>;
 
-  constructor(private apollo: Apollo, private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(private apollo: Apollo, 
+    private router: Router, private activatedRoute: ActivatedRoute ) {
 
     this.countries$ = this.apollo
       .watchQuery({
@@ -42,16 +42,10 @@ export class NavComponent implements OnInit {
 
   }
 
-  // onSelectCountry(change: MatSelectionListChange) {
-  //   console.log(change.options[0].value);
-  //   this.router.navigate([`../${change.options[0].value}`], { relativeTo: this.activatedRoute });
-  // }
-
-  onClick() {
-
-    this.router.navigate([`../France`],);
+  onSelectCountry(change: MatSelectionListChange) {
+    const countryId = this.activatedRoute.snapshot.paramMap.get('country');
+    const safeUrl = encodeURI(countryId ?? '');
+    console.log(safeUrl);
+    this.router.navigateByUrl(this.router.url.replace( safeUrl ?? '', change.options[0].value));
   }
-
-
-
 }
