@@ -1,15 +1,12 @@
-:host{
-    display: flex;
-    flex-direction: row;
+.container{
+    display: grid;
+    grid-template-columns: 20rem 1fr;
+    grid-template-areas: " nav  view"
 }
-#id {
-    width: 20rem;
-    height: 100vh;
-    overflow: hidden;
+#nav {
+    grid-area: nav;
 }
 
 #data-viewer {
-    width: calc(100vw - 20rem);
-    height: 100vh;
-    overflow: hidden;
+    grid-area: view;
 }

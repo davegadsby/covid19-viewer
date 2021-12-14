@@ -3,7 +3,7 @@ import { Apollo } from 'apollo-angular';
 import gql from "graphql-tag";
 import { map } from 'rxjs';
 import { Chart } from 'chart.js';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 const GET_COUNTRY_DATA = gql`
 query GetCountryData($country: String!) {
@@ -20,13 +20,8 @@ countries(names: [$country]) {
 
 @Component({
   selector: 'lib-data-viewer',
-  template: `
-   <div>
-    <canvas #chart></canvas>
-    </div>
-  `,
-  styles: [
-  ]
+  templateUrl: 'data-viewer.component.html',
+  styleUrls: ['data-viewer.component.scss']
 })
 export class DataViewerComponent implements OnInit {
 
