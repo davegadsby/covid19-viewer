@@ -1,0 +1,5 @@
+<mat-selection-list #countries [multiple]="false" (selectionChange)="onSelectCountry($event)">
+  <mat-list-option *ngFor="let country of countries$ | async" [value]="country">
+    {{country}}
+  </mat-list-option>
+</mat-selection-list>

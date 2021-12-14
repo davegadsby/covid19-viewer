@@ -7,15 +7,8 @@ import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'lib-nav',
-  template: `
-    <mat-selection-list #countries [multiple]="false" (selectionChange)="onSelectCountry($event)">
-    <mat-list-option *ngFor="let country of countries$ | async" [value]="country">
-      {{country}}
-    </mat-list-option>
-  </mat-selection-list>
-  `,
-  styles: [
-  ]
+  templateUrl: 'nav.component.html',
+  styleUrls: ['nav.component.scss']
 })
 export class NavComponent implements OnInit {
 

@@ -1,10 +1,12 @@
 :host {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex: 1;
+  padding: 2rem;
 }
 
-.char-host {
+.chart-host {
   position: relative;
+  height: 300px;
   width: 100%;
 }

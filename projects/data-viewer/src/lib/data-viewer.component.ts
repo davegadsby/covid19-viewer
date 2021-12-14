@@ -27,15 +27,15 @@ export class DataViewerComponent implements OnInit {
 
   @ViewChild('chart', { static: true }) chartElement?: ElementRef;
   chart!: Chart;
-
+  country!: string;
 
 
   constructor(private apollo: Apollo, private route: ActivatedRoute) {
     this.route.params.subscribe(params => {
-      const country = params['country'];
-      console.log('country', country);
-      if (country) {
-        this.plot(country);
+      this.country = params['country'];
+      console.log('country', this.country);
+      if (this.country) {
+        this.plot(this.country);
       }
     })
   }
@@ -106,17 +106,29 @@ export class DataViewerComponent implements OnInit {
         });
 
         const diffDataSeries = {
-          data: weekAverage,
-          label: countries[0].name,
+          data: diffData,
+          type: 'bar',
+          label: 'daily cases',
           borderColor: 'rgba(0,0,0, 0.5)',
           pointBackgroundColor: '#00c4b6',
-          showLine: true,
-          pointRadius: 0.5,
-          borderWidth: 1,
-          backgroundColor: 'rgba(0,0,0, 0.1)'
+          showLine: false,
+          pointRadius: 0,
+          borderWidth: 0,
+          backgroundColor: 'rgba(255,0,0, 0.2)'
         }
 
-        this.chart.data.datasets = [diffDataSeries];
+        const weekAverageDataSeries = {
+          data: weekAverage,
+          label: '7 day average',
+          borderColor: 'rgba(255,0,0, 0.8)',
+          pointBackgroundColor: '#00c4b6',
+          showLine: true,
+          pointRadius: 0,
+          borderWidth: 2,
+          backgroundColor: 'rgba(0,0,0, 0)'
+        }
+
+        this.chart.data.datasets = [diffDataSeries, weekAverageDataSeries];
         this.chart.update();
       })
   }
@@ -142,8 +154,6 @@ export class DataViewerComponent implements OnInit {
 
       // options for all datasets
       options: {
-        maintainAspectRatio: true,
-        responsive: true,
         scales: {
           xAxes: [{
             type: 'time',
