@@ -1,20 +1,20 @@
 .container{
-    display: grid;
-    grid-template-columns: 20rem 4rem 1fr 4rem;
-    grid-template-rows: auto;
-    grid-template-areas: " nav pad1 view pad2"
-}
-#nav {
-    grid-area: nav;
+   display: flex;
+   flex-grow: 1;
 }
 
-#data-viewer {
-    grid-area: view;
+mat-sidenav{
+    width: 20rem !important;
 }
-
+mat-sidenav-content{
+    width: -webkit-fill-available;
+}
+:host {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+}
 .title{
-
-        padding-top: 2rem;
-        padding-left: 1rem;
-   
+    padding-top: 2rem;
+    padding-left: 1rem;
 }

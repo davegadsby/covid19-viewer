@@ -13,7 +13,6 @@ export class AppComponent {
   constructor( private route: ActivatedRoute) {
     this.route.params.subscribe(params => {
       this.country = params['country'];
-      console.log('changed', this.country);
     })
   }
 

@@ -1,15 +1,17 @@
 <mat-toolbar color="primary" class="mat-elevation-z6">
     <span>Covid-19 Viewer</span>
 </mat-toolbar>
-<div class="container">
-    <div id="nav">
-        <h2 class="title">All Countries</h2>
-        <router-outlet name='nav'></router-outlet>
-    </div>
-    <div id="data-viewer">
-      
-                <router-outlet name='data-viewer'></router-outlet>
- 
-    </div>
 
-</div>
+<mat-sidenav-container class="container">
+    <mat-sidenav mode="side" opened>
+        <div id="nav">
+            <h2 class="title">All Countries</h2>
+            <router-outlet name='nav'></router-outlet>
+        </div>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <div id="data-viewer">
+            <router-outlet name='data-viewer'></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>
