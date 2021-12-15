@@ -145,11 +145,17 @@ export class DataViewerComponent implements OnInit {
           x: {
             type: 'time',
             time: {
-              //unit: 'day',
+
               tooltipFormat: 'DD'
+            },
+            grid: {
+              display: false,
             }
           },
           y: {
+            grid: {
+              display: true,
+            }
 
           }
         },

@@ -1,12 +1,17 @@
-:host {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  padding: 2rem;
+.chart-container {
+  position: relative;
+  margin: auto;
+  height: 40vh;
+  width: 60vw;
 }
 
-.chart-host {
-  position: relative;
-  height: 300px;
-  width: 100%;
+:host{
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+mat-card{
+  width: fit-content;
+  height: fit-content;
 }
