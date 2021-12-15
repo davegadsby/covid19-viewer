@@ -53,10 +53,8 @@ export class SearchComponent implements OnInit {
   }
 
   onSelectCountry(change: MatAutocompleteSelectedEvent) {
-    const countryId = this.activatedRoute.snapshot.paramMap.get('country');
-    const safeUrl = encodeURI(countryId ?? '');
-    console.log(safeUrl);
-    this.router.navigateByUrl(this.router.url.replace( safeUrl ?? '', change.option?.value));
+    const path = `cases/${change.option.value}`;
+    this.router.navigate(['', {outlets: { 'content': path}} ]);
   }
 
 }

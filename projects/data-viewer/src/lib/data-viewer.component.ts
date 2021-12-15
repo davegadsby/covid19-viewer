@@ -102,26 +102,26 @@ export class DataViewerComponent implements OnInit {
           spanGaps: false,
           label: 'Daily cases',
           borderColor: 'rgba(0,0,0, 0.5)',
-          pointBackgroundColor: 'rgba(255,0,0, 0.5)',
+          pointBackgroundColor: '#FF4081',
           showLine: false,
           pointRadius: 0,
           borderWidth: 0,
-          backgroundColor: 'rgba(0,0,0, 0.2)',
+          backgroundColor: 'rgba(0,0,0, 1)',
         }
 
         const weekAverageDataSeries = {
           data: weekAverage,
           spanGaps: true,
           label: '7 day average',
-          borderColor: 'rgba(255,0,0, 0.8)',
-          pointBackgroundColor: 'rgba(255,0,0, 0.8)',
+          borderColor: '#FF4081',
+          pointBackgroundColor: '#FF4081',
           showLine: true,
           pointRadius: 0,
           borderWidth: 2,
           backgroundColor: 'rgba(0,0,0, 0)'
         }
 
-        this.chart.data.datasets = [diffDataSeries, weekAverageDataSeries];
+        this.chart.data.datasets = [weekAverageDataSeries, diffDataSeries];
         this.chart.update();
       })
   }

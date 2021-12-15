@@ -1,7 +1,7 @@
 <div class="nav">
     <mat-selection-list #countries [multiple]="false" (selectionChange)="onSelectCountry($event)">
-      <mat-list-option *ngFor="let country of countries$ | async" [value]="country"
-      [routerLink]="['/country', country]" routerLinkActive="active"  queryParamsHandling="merge">
+      <mat-list-option *ngFor="let country of countries$ | async" [value]="country">
+      <!-- [routerLink]="[{outlets: {content: ['cases']}}]" routerLinkActive="active"  queryParamsHandling="merge"> -->
         {{country}}
       </mat-list-option>
     </mat-selection-list>

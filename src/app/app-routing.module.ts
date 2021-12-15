@@ -3,12 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'country/:country',
+    path: '',
     pathMatch: 'prefix',
     children: [
       {
         path: 'cases',
-        outlet: 'data-viewer',
+        outlet: 'content',
         loadChildren: () => import('../../projects/data-viewer/src/lib/data-viewer.module').then(m => m.DataViewerModule),
       },
       {
@@ -18,7 +18,7 @@ const routes: Routes = [
       },
     ]
   },
-  {path: '', pathMatch: 'full', redirectTo: '/country/United Kingdom/(data-viewer:cases//nav:nav)'}
+  {path: '', pathMatch: 'full', redirectTo: '/(content:cases//nav:nav)'}
 ];
 
 @NgModule({

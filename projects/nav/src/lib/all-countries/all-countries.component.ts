@@ -36,10 +36,7 @@ export class AllCountriesComponent implements OnInit {
   }
 
   onSelectCountry(change: MatSelectionListChange) {
-    // const countryId = this.activatedRoute.snapshot.paramMap.get('country');
-    // const safeUrl = encodeURI(countryId ?? '');
-    // console.log(safeUrl);
-   //this.router.navigateByUrl(this.router.url.replace( safeUrl ?? '', change.options[0].value));
-  // this.router.navigate(['../country', change.options[0].value])
+  const path = `cases/${change.options[0].value}`;
+  this.router.navigate(['', {outlets: { 'content': path}} ]);
   }
 }
