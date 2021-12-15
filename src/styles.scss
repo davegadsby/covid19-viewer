@@ -9,15 +9,15 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
-// // Define a light theme
-// $light-primary: mat.define-palette(mat.$indigo-palette);
-// $light-accent: mat.define-palette(mat.$pink-palette);
-// $light-theme: mat.define-light-theme((
-//  color: (
-//    primary: $light-primary,
-//    accent: $light-accent,
-//  )
-// ));
+// Define a light theme
+$light-primary: mat.define-palette(mat.$indigo-palette);
+$light-accent: mat.define-palette(mat.$pink-palette);
+$light-theme: mat.define-light-theme((
+ color: (
+   primary: $light-primary,
+   accent: $light-accent,
+ )
+));
 
 // Define a dark theme
 $dark-primary: mat.define-palette(mat.$pink-palette);
@@ -31,11 +31,11 @@ $dark-theme: mat.define-dark-theme((
 
 // Apply the dark theme by default
 @include mat.core-theme($dark-theme);
-// @include mat.button-theme($dark-theme);
+@include mat.all-component-themes($dark-theme);
 
 // Apply the light theme only when the `.my-light-theme` CSS class is applied
 // to an ancestor element of the components (such as `body`).
 // .my-light-theme {
 //  @include mat.core-color($light-theme);
-//  @include mat.button-color($light-theme);
+//  @include mat.all-component-themes($light-theme);
 // }

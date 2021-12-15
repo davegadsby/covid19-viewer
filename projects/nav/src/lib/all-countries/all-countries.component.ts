@@ -6,11 +6,11 @@ import gql from 'graphql-tag';
 import { map, Observable } from 'rxjs';
 
 @Component({
-  selector: 'lib-nav',
-  templateUrl: 'nav.component.html',
-  styleUrls: ['nav.component.scss']
+  selector: 'lib-all-countries',
+  templateUrl: './all-countries.component.html',
+  styleUrls: ['./all-countries.component.scss']
 })
-export class NavComponent implements OnInit {
+export class AllCountriesComponent implements OnInit {
 
   countries$!: Observable<string[]>;
 
@@ -36,9 +36,10 @@ export class NavComponent implements OnInit {
   }
 
   onSelectCountry(change: MatSelectionListChange) {
-    const countryId = this.activatedRoute.snapshot.paramMap.get('country');
-    const safeUrl = encodeURI(countryId ?? '');
-    console.log(safeUrl);
-    this.router.navigateByUrl(this.router.url.replace( safeUrl ?? '', change.options[0].value));
+    // const countryId = this.activatedRoute.snapshot.paramMap.get('country');
+    // const safeUrl = encodeURI(countryId ?? '');
+    // console.log(safeUrl);
+   //this.router.navigateByUrl(this.router.url.replace( safeUrl ?? '', change.options[0].value));
+  // this.router.navigate(['../country', change.options[0].value])
   }
 }
