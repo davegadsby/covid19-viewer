@@ -1,0 +1,22 @@
+<h1>{{country}}</h1>
+
+
+<div class="headline">
+  <h2>{{overview.latest.date}}:</h2>
+  <h2>{{latestCases | number: '1.0-0' }} cases</h2>
+</div>
+
+<span>
+  Total:{{overview.latest.confirmed}}
+  Latest:{{overview.latest.growthRate}}
+</span>
+
+Overall
+<p>
+  Deaths:{{overview.overall.deaths}}
+  Total:{{overview.overall.confirmed}}
+</p>
+
+<div class="chart-container">
+  <canvas #chart></canvas>
+</div>

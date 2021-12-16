@@ -4,6 +4,10 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
+      "dashboard": [
+        "dist/dashboard/dashboard",
+        "dist/dashboard"
+      ],
       "data-viewer": [
         "dist/data-viewer/data-viewer",
         "dist/data-viewer"

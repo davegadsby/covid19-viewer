@@ -12,6 +12,11 @@ const routes: Routes = [
         loadChildren: () => import('../../projects/data-viewer/src/lib/data-viewer.module').then(m => m.DataViewerModule),
       },
       {
+        path: 'dashboard',
+        outlet: 'content',
+        loadChildren: () => import('../../projects/dashboard/src/lib/dashboard.module').then(m => m.DashboardModule),
+      },
+      {
         path: 'nav',
         outlet: 'nav',
         loadChildren: () => import('../../projects/nav/src/lib/nav.module').then(m => m.NavModule),
@@ -22,7 +27,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {enableTracing: true})],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
