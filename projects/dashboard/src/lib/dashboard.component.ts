@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from "graphql-tag";
 import { map } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DateTime } from 'luxon';
 import { Chart } from 'chart.js';
 import { resourceLimits } from 'worker_threads';
@@ -48,10 +48,11 @@ export class DashboardComponent implements OnInit {
 
 
   constructor(private apollo: Apollo, private route: ActivatedRoute) {
+
     this.route.params.subscribe(params => {
       this.country = params['country'];
-      console.log('country', this.country);
-      if (this.country) {
+      console.log('Dashboard:country', this.country);
+      if (this.country != null) {
         this.render(this.country);
       }
     })

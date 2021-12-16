@@ -23,7 +23,7 @@ const routes: Routes = [
       },
     ]
   },
-  {path: '', pathMatch: 'full', redirectTo: '/(content:cases//nav:nav)'}
+  {path: '', pathMatch: 'full', redirectTo: '/(content:dashboard//nav:nav)'}
 ];
 
 @NgModule({
