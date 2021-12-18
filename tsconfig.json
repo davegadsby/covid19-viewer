@@ -15,6 +15,10 @@
       "nav": [
         "dist/nav/nav",
         "dist/nav"
+      ],
+      "shell": [
+        "dist/shell/shell",
+        "dist/shell"
       ]
     },
     "outDir": "./dist/out-tsc",

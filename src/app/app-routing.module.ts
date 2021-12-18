@@ -12,7 +12,8 @@ const routes: Routes = [
     pathMatch: 'prefix',
     loadChildren: () => import('../../projects/dashboard/src/lib/dashboard.module').then(m => m.DashboardModule),
   },
-  { path: '', pathMatch: 'full', redirectTo: '/dashboard/France' },
+
+  { path: '', pathMatch: 'full', redirectTo: '/detail/France' },
   { path: '**', pathMatch: 'full', redirectTo: '' }
 ];
 

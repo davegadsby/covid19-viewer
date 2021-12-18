@@ -16,6 +16,8 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AllCountriesComponent } from './all-countries/all-countries.component';
 import { SearchComponent } from './search/search.component';
+import { ShellModule } from 'projects/shell/src/lib/shell.module';
+import { ShellComponent } from 'projects/shell/src/public-api';
 Chart.register(...registerables);
 
 const uri = 'https://covid19-graphql.now.sh/'; // <-- add the URL of the GraphQL server here
@@ -27,24 +29,32 @@ export function createApollo(httpLink: HttpLink) {
 }
 
 const routes: Routes = [
-  {
-    path: '',
-    pathMatch: 'prefix',
-    children: [
-      { path: ':country', component: DataViewerComponent },
-      { path: '', component: DataViewerComponent },
-      {
-        path: '',
-        component: AllCountriesComponent,
-        outlet: 'nav',
-      },
-      {
-        path: 'search',
-        outlet: 'nav',
-        component: SearchComponent
-      }
-    ]
-  }
+
+// need to define a template 'shell' in another common module,
+// This shell will have all the layout/router outlets currently in the app.component
+// This means we can provide child routes for outlets at this level because they are in the template, not in the parent app.component
+
+{
+  path: '',
+  component: ShellComponent,
+  children: [
+    {
+      path: ':country', component: DataViewerComponent,
+    },
+    {
+      path: '',
+      outlet: 'nav',
+      component: AllCountriesComponent,
+    },
+    {
+      path: 'search',
+      outlet: 'nav',
+      component: SearchComponent
+    },
+   
+  ],
+  
+},
 ];
 
 @NgModule({
@@ -60,6 +70,7 @@ const routes: Routes = [
   ],
   imports: [
     RouterModule.forChild(routes),
+    ShellModule,
     HttpLinkModule, ApolloModule, HttpClientModule, MatCardModule, ReactiveFormsModule,
     MatListModule, CommonModule, MatAutocompleteModule, MatFormFieldModule, MatInputModule,
 
