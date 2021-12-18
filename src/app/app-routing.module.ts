@@ -3,31 +3,29 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'detail',
     pathMatch: 'prefix',
     children: [
       {
-        path: 'cases',
-        outlet: 'content',
+        path: ':country',
+        pathMatch: 'prefix',
         loadChildren: () => import('../../projects/data-viewer/src/lib/data-viewer.module').then(m => m.DataViewerModule),
       },
       {
-        path: 'dashboard',
-        outlet: 'content',
-        loadChildren: () => import('../../projects/dashboard/src/lib/dashboard.module').then(m => m.DashboardModule),
-      },
-      {
-        path: 'nav',
+        path: '',
+        pathMatch: 'prefix',
         outlet: 'nav',
         loadChildren: () => import('../../projects/nav/src/lib/nav.module').then(m => m.NavModule),
       },
+
     ]
   },
-  {path: '', pathMatch: 'full', redirectTo: '/(content:dashboard//nav:nav)'}
+  { path: '', pathMatch: 'full', redirectTo: '/detail' },
+  // { path: '**', pathMatch: 'full', redirectTo: '' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { enableTracing: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

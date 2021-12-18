@@ -23,18 +23,18 @@ export function createApollo(httpLink: HttpLink) {
 
 const routes: Routes = [
   {
-    path: 'all',
+    path: '',
     component: AllCountriesComponent
   },
   {
     path: 'search',
     component: SearchComponent
   },
-  {
-    path: '',
-    redirectTo:'all',
-    pathMatch: 'full'
-  }
+  // {
+  //   path: '',
+  //   redirectTo:'all',
+  //   pathMatch: 'full'
+  // }
 ];
 
 @NgModule({

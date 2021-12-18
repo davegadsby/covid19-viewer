@@ -34,9 +34,4 @@ export class AllCountriesComponent implements OnInit {
   ngOnInit(): void {
 
   }
-
-  onSelectCountry(change: MatSelectionListChange) {
-  const path = `cases/${change.options[0].value}`;
-  this.router.navigate(['', {outlets: { 'content': path}} ]);
-  }
 }

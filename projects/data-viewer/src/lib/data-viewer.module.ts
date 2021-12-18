@@ -19,7 +19,7 @@ export function createApollo(httpLink: HttpLink) {
 }
 
 const routes: Routes = [
-  { path: ':country',  component: DataViewerComponent},
+  { path: '/:country',  component: DataViewerComponent},
   { path: '',  component: DataViewerComponent}
 ];
 
