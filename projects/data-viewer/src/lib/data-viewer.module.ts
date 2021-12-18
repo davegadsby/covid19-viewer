@@ -5,9 +5,17 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { HttpClientModule } from '@angular/common/http';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { Chart, registerables } from 'chart.js';
 import 'chartjs-adapter-luxon';
+import { CommonModule } from '@angular/common';
+import { MatListModule } from '@angular/material/list';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AllCountriesComponent } from './all-countries/all-countries.component';
+import { SearchComponent } from './search/search.component';
 Chart.register(...registerables);
 
 const uri = 'https://covid19-graphql.now.sh/'; // <-- add the URL of the GraphQL server here
@@ -19,13 +27,24 @@ export function createApollo(httpLink: HttpLink) {
 }
 
 const routes: Routes = [
-  { path: '/:country',  component: DataViewerComponent},
-  { path: '',  component: DataViewerComponent}
+
+  { path: ':country', component: DataViewerComponent },
+  { path: '', component: DataViewerComponent },
+  {
+    path: '',
+    component: AllCountriesComponent,
+    outlet: 'nav',
+  },
+  {
+    path: 'search',
+    outlet: 'nav',
+    component: SearchComponent
+  }
 ];
 
 @NgModule({
   declarations: [
-    DataViewerComponent
+    DataViewerComponent, AllCountriesComponent, SearchComponent
   ],
   providers: [
     {
@@ -36,7 +55,8 @@ const routes: Routes = [
   ],
   imports: [
     RouterModule.forChild(routes),
-    HttpLinkModule, ApolloModule, HttpClientModule,     MatCardModule
+    HttpLinkModule, ApolloModule, HttpClientModule, MatCardModule, ReactiveFormsModule,
+    MatListModule, CommonModule, MatAutocompleteModule, MatFormFieldModule, MatInputModule,
 
   ],
   exports: [

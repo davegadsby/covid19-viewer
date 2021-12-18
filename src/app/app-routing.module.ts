@@ -5,23 +5,15 @@ const routes: Routes = [
   {
     path: 'detail',
     pathMatch: 'prefix',
-    children: [
-      {
-        path: ':country',
-        pathMatch: 'prefix',
-        loadChildren: () => import('../../projects/data-viewer/src/lib/data-viewer.module').then(m => m.DataViewerModule),
-      },
-      {
-        path: '',
-        pathMatch: 'prefix',
-        outlet: 'nav',
-        loadChildren: () => import('../../projects/nav/src/lib/nav.module').then(m => m.NavModule),
-      },
-
-    ]
+    loadChildren: () => import('../../projects/data-viewer/src/lib/data-viewer.module').then(m => m.DataViewerModule),
   },
-  { path: '', pathMatch: 'full', redirectTo: '/detail' },
-  // { path: '**', pathMatch: 'full', redirectTo: '' }
+  {
+    path: 'dashbard',
+    pathMatch: 'prefix',
+    loadChildren: () => import('../../projects/dashboard/src/lib/dashboard.module').then(m => m.DashboardModule),
+  },
+  { path: '', pathMatch: 'full', redirectTo: '/dashbard' },
+  { path: '**', pathMatch: 'full', redirectTo: '' }
 ];
 
 @NgModule({
