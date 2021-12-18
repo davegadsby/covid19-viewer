@@ -27,18 +27,23 @@ export function createApollo(httpLink: HttpLink) {
 }
 
 const routes: Routes = [
-
-  { path: ':country', component: DataViewerComponent },
-  { path: '', component: DataViewerComponent },
   {
     path: '',
-    component: AllCountriesComponent,
-    outlet: 'nav',
-  },
-  {
-    path: 'search',
-    outlet: 'nav',
-    component: SearchComponent
+    pathMatch: 'prefix',
+    children: [
+      { path: ':country', component: DataViewerComponent },
+      { path: '', component: DataViewerComponent },
+      {
+        path: '',
+        component: AllCountriesComponent,
+        outlet: 'nav',
+      },
+      {
+        path: 'search',
+        outlet: 'nav',
+        component: SearchComponent
+      }
+    ]
   }
 ];
 

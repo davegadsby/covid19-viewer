@@ -8,11 +8,11 @@ const routes: Routes = [
     loadChildren: () => import('../../projects/data-viewer/src/lib/data-viewer.module').then(m => m.DataViewerModule),
   },
   {
-    path: 'dashbard',
+    path: 'dashboard',
     pathMatch: 'prefix',
     loadChildren: () => import('../../projects/dashboard/src/lib/dashboard.module').then(m => m.DashboardModule),
   },
-  { path: '', pathMatch: 'full', redirectTo: '/dashbard' },
+  { path: '', pathMatch: 'full', redirectTo: '/dashboard/France' },
   { path: '**', pathMatch: 'full', redirectTo: '' }
 ];
 
