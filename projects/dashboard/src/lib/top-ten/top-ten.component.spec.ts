@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShellComponent } from './shell.component';
+import { TopTenComponent } from './top-ten.component';
 
-describe('ShellComponent', () => {
-  let component: ShellComponent;
-  let fixture: ComponentFixture<ShellComponent>;
+describe('TopTenComponent', () => {
+  let component: TopTenComponent;
+  let fixture: ComponentFixture<TopTenComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ShellComponent ]
+      declarations: [ TopTenComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ShellComponent);
+    fixture = TestBed.createComponent(TopTenComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

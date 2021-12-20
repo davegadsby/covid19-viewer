@@ -49,6 +49,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(private apollo: Apollo, private route: ActivatedRoute) {
 
+    console.log('Dashboard:Created');
+
     this.route.params.subscribe(params => {
       this.country = params['country'];
       console.log('Dashboard:country', this.country);

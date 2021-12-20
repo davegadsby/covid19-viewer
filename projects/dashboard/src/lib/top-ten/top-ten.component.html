@@ -1,0 +1,12 @@
+<mat-card *ngFor="let country of topTen$ | async" >
+
+<h1>{{country.name}}</h1>
+<div class="headline">
+    <h2>{{country.date}}:</h2>
+    <h2>{{country.new | number: '1.0-0' }} cases</h2>
+  </div>
+
+  <button [routerLink]="[ '../detail',{outlets: {content: country.name}}]">
+      Open
+  </button>
+</mat-card>

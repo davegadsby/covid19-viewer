@@ -8,6 +8,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { Chart, registerables } from 'chart.js';
 import 'chartjs-adapter-luxon';
 import { CommonModule } from '@angular/common';
+import { TopTenComponent } from './top-ten/top-ten.component';
+import { MatCardModule } from '@angular/material/card';
 Chart.register(...registerables);
 
 const uri = 'https://covid19-graphql.now.sh/'; // <-- add the URL of the GraphQL server here
@@ -19,13 +21,14 @@ export function createApollo(httpLink: HttpLink) {
 }
 
 const routes: Routes = [
-  { path: ':country',  component: DashboardComponent},
-  { path: '',  component: DashboardComponent}
+ // { path: ':country', outlet: 'content',  component: DashboardComponent},
+  { path: '', outlet: 'content',  component: TopTenComponent}
 ];
 
 @NgModule({
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    TopTenComponent
   ],
   providers: [
     {
@@ -36,7 +39,7 @@ const routes: Routes = [
   ],
   imports: [
     RouterModule.forChild(routes), CommonModule,
-    HttpLinkModule, ApolloModule, HttpClientModule,
+    HttpLinkModule, ApolloModule, HttpClientModule, MatCardModule
   ],
   exports: [
     DashboardComponent,ApolloModule
