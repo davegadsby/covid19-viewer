@@ -6,10 +6,12 @@ import { DashboardComponent } from './dashboard.component';
 import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { HttpClientModule } from '@angular/common/http';
 import { Chart, registerables } from 'chart.js';
+import {MatButtonModule} from '@angular/material/button';
 import 'chartjs-adapter-luxon';
 import { CommonModule } from '@angular/common';
 import { TopTenComponent } from './top-ten/top-ten.component';
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressBarModule} from '@angular/material/progress-bar'
 import { RecentCasesComponent } from './recent-cases/recent-cases.component';
 Chart.register(...registerables);
 
@@ -41,7 +43,8 @@ const routes: Routes = [
   ],
   imports: [
     RouterModule.forChild(routes), CommonModule,
-    HttpLinkModule, ApolloModule, HttpClientModule, MatCardModule
+    HttpLinkModule, ApolloModule, HttpClientModule, MatCardModule, MatProgressBarModule, 
+    MatButtonModule
   ],
   exports: [
     DashboardComponent,ApolloModule
