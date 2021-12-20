@@ -6,6 +6,8 @@
     <h2>{{country.new | number: '1.0-0' }} cases</h2>
   </div>
 
+  <recent-cases [country]="country.name"> </recent-cases>
+
   <button [routerLink]="[ '../detail',{outlets: {content: country.name}}]">
       Open
   </button>

@@ -10,6 +10,7 @@ import 'chartjs-adapter-luxon';
 import { CommonModule } from '@angular/common';
 import { TopTenComponent } from './top-ten/top-ten.component';
 import { MatCardModule } from '@angular/material/card';
+import { RecentCasesComponent } from './recent-cases/recent-cases.component';
 Chart.register(...registerables);
 
 const uri = 'https://covid19-graphql.now.sh/'; // <-- add the URL of the GraphQL server here
@@ -28,7 +29,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     DashboardComponent,
-    TopTenComponent
+    TopTenComponent,
+    RecentCasesComponent
   ],
   providers: [
     {
