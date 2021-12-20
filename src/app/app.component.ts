@@ -8,11 +8,15 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AppComponent {
 
+  title = 'covid19-viewer';
+  country!: string;
+  openSidebar = false;
 
-  // constructor( private route: ActivatedRoute) {
-  //   this.route.params.subscribe(params => {
-  //     this.country = params['country'];
-  //   })
-  // }
+
+  constructor( private route: ActivatedRoute) {
+    this.route.params.subscribe(params => {
+      this.country = params['country'];
+    })
+  }
 
 }

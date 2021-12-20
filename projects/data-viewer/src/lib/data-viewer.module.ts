@@ -30,31 +30,28 @@ export function createApollo(httpLink: HttpLink) {
 
 const routes: Routes = [
 
-// need to define a template 'shell' in another common module,
-// This shell will have all the layout/router outlets currently in the app.component
-// This means we can provide child routes for outlets at this level because they are in the template, not in the parent app.component
-
-{
-  path: '',
-  component: ShellComponent,
-  children: [
-    {
-      path: ':country', component: DataViewerComponent,
-    },
-    {
-      path: '',
-      outlet: 'nav',
-      component: AllCountriesComponent,
-    },
-    {
-      path: 'search',
-      outlet: 'nav',
-      component: SearchComponent
-    },
-   
-  ],
-  
-},
+  // need to define a template 'shell' in another common module,
+  // This shell will have all the layout/router outlets currently in the app.component
+  // This means we can provide child routes for outlets at this level because they are in the template, not in the parent app.component
+  {
+    path: ':country', component: DataViewerComponent,
+    outlet: 'content',
+  },
+  {
+    path: '',
+    outlet: 'nav',
+    component: AllCountriesComponent,
+  },
+  {
+    path: 'all',
+    outlet: 'nav',
+    component: AllCountriesComponent,
+  },
+  {
+    path: 'search',
+    outlet: 'nav',
+    component: SearchComponent
+  }
 ];
 
 @NgModule({

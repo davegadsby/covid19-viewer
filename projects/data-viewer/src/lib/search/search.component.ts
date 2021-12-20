@@ -53,8 +53,7 @@ export class SearchComponent implements OnInit {
   }
 
   onSelectCountry(change: MatAutocompleteSelectedEvent) {
-    const path = `cases/${change.option.value}`;
-    this.router.navigate(['', {outlets: { 'content': path}} ]);
+    this.router.navigate(['/detail', {outlets: {content: `${change.option.value}`}}]);
   }
 
 }

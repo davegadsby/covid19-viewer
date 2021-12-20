@@ -1,0 +1,22 @@
+.chart-container {
+    position: relative;
+    margin: auto;
+    height: 40vh;
+    width: 60vw;
+  }
+
+  .main, .container {
+      height: 100%;
+  }
+  
+  :host{
+   // padding: 2rem;
+
+    // display: flex;
+    // flex-direction: column;
+  }
+  
+  mat-card{
+    width: fit-content;
+    height: fit-content;
+  }

@@ -1,7 +1,10 @@
+
+<a [routerLink]="['/detail',{outlets: {nav: ['search']}}]"> test nav</a>
+
 <div class="nav">
     <mat-selection-list #countries [multiple]="false">
       <mat-list-option *ngFor="let country of countries$ | async" [value]="country"
-       [routerLink]="[country]" routerLinkActive="active">
+       [routerLink]="[ '/detail',{outlets: {content: country}}]" routerLinkActive="active">
         {{country}}
       </mat-list-option>
     </mat-selection-list>
