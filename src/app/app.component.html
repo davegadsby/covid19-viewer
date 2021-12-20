@@ -1,7 +1,14 @@
 
-<mat-toolbar color="primary" class="mat-elevation-z6">
+<mat-toolbar color="primary" >
+
+  <mat-toolbar-row class="mat-elevation-z6">
     <span [routerLink]="['/dashboard']">Covid-19 Viewer</span>
-  </mat-toolbar>
+  </mat-toolbar-row>
+
+  <mat-toolbar-row [ngClass]="{'hide': !showSecondToolbar}">
+    <router-outlet (activate)="showSecondToolbar = true" (deactivate)="showSecondToolbar = false" name="secondary-tools"></router-outlet>
+  </mat-toolbar-row>
+</mat-toolbar>
   
   <mat-sidenav-container class="container">
   

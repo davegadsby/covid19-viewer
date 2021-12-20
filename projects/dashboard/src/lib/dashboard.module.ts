@@ -13,6 +13,7 @@ import { TopTenComponent } from './top-ten/top-ten.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule} from '@angular/material/progress-bar'
 import { RecentCasesComponent } from './recent-cases/recent-cases.component';
+import { ToolsComponent } from './tools/tools.component';
 Chart.register(...registerables);
 
 const uri = 'https://covid19-graphql.now.sh/'; // <-- add the URL of the GraphQL server here
@@ -25,14 +26,16 @@ export function createApollo(httpLink: HttpLink) {
 
 const routes: Routes = [
  // { path: ':country', outlet: 'content',  component: DashboardComponent},
-  { path: '', outlet: 'content',  component: TopTenComponent}
+  { path: '', outlet: 'content',  component: TopTenComponent},
+  { path: '', outlet: 'secondary-tools',  component: ToolsComponent}
 ];
 
 @NgModule({
   declarations: [
     DashboardComponent,
     TopTenComponent,
-    RecentCasesComponent
+    RecentCasesComponent,
+    ToolsComponent
   ],
   providers: [
     {

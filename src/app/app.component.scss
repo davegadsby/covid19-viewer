@@ -1,21 +1,5 @@
-// .chart-container {
-//     position: relative;
-//     margin: auto;
-//     height: 40vh;
-//     width: 60vw;
-//   }
 
-//   .main, .container {
-//       height: 100%;
-//   }
-  
-  :host{
-   // padding: 2rem;
-
-    // display: flex;
-    // flex-direction: column;
-  }
-  
+ 
   mat-card{
     width: fit-content;
     height: fit-content;
@@ -25,4 +9,18 @@
       * {
         cursor: pointer;
       }
+      .hide {
+          height: 0;
+    
+    } 
+  }
+
+  :host{
+      height: inherit;
+      display: flex;
+      flex-direction: column;
+  }
+
+  .container{
+    flex-grow: 1;
   }

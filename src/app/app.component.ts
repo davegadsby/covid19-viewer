@@ -11,6 +11,7 @@ export class AppComponent {
   title = 'covid19-viewer';
   country!: string;
   openSidebar = false;
+  showSecondToolbar = false;
 
 
   constructor( private route: ActivatedRoute) {
