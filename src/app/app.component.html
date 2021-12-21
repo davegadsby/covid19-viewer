@@ -5,7 +5,7 @@
     <span [routerLink]="['/dashboard']">Covid-19 Viewer</span>
   </mat-toolbar-row>
 
-  <mat-toolbar-row [ngClass]="{'hide': !showSecondToolbar}">
+  <mat-toolbar-row [ngClass]="{'hide': !showSecondToolbar}" id="secondary-tools">
     <router-outlet (activate)="showSecondToolbar = true" (deactivate)="showSecondToolbar = false" name="secondary-tools"></router-outlet>
   </mat-toolbar-row>
 </mat-toolbar>
@@ -19,7 +19,7 @@
     </mat-sidenav>
     <mat-sidenav-content>
         <div id="data-viewer">
-            <router-outlet name="content"></router-outlet>
+            <router-outlet></router-outlet>
         </div>
     </mat-sidenav-content>
   </mat-sidenav-container>

@@ -13,7 +13,7 @@ const routes: Routes = [
     loadChildren: () => import('../../projects/dashboard/src/lib/dashboard.module').then(m => m.DashboardModule),
   },
 
-  { path: '', pathMatch: 'full', redirectTo: '/detail/(content:France//nav:all)' },
+  { path: '', pathMatch: 'full', redirectTo: '/detail/country/France' },
   // { path: '**', pathMatch: 'full', redirectTo: '' }
 ];
 

@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AllCountriesComponent } from './all-countries/all-countries.component';
 import { SearchComponent } from './search/search.component';
+import { ToolsComponent } from './tools/tools.component';
 Chart.register(...registerables);
 
 const uri = 'https://covid19-graphql.now.sh/'; // <-- add the URL of the GraphQL server here
@@ -28,28 +29,35 @@ export function createApollo(httpLink: HttpLink) {
 
 const routes: Routes = [
   {
-    path: ':country', component: DataViewerComponent,
-    outlet: 'content',
+    path: 'country/:country',
+    children: [
+      {
+        path: '',
+        component: DataViewerComponent
+      },
+      {
+        path: '',
+        outlet: 'secondary-tools',
+        component: ToolsComponent
+      },
+      {
+        path: '',
+        outlet: 'nav',
+        component: AllCountriesComponent,
+      },
+      {
+        path: 'all',
+        outlet: 'nav',
+        component: AllCountriesComponent,
+      },
+      {
+        path: 'search',
+        outlet: 'nav',
+        component: SearchComponent
+      }
+    ]
   },
-  // {
-  //   path: '', component: DataViewerComponent,
-  //   outlet: 'content',
-  // },
-  {
-    path: '',
-    outlet: 'nav',
-    component: AllCountriesComponent,
-  },
-  {
-    path: 'all',
-    outlet: 'nav',
-    component: AllCountriesComponent,
-  },
-  {
-    path: 'search',
-    outlet: 'nav',
-    component: SearchComponent
-  }
+ 
 ];
 
 @NgModule({

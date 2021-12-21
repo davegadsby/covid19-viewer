@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { DashboardComponent } from './dashboard.component';
 import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { HttpClientModule } from '@angular/common/http';
 import { Chart, registerables } from 'chart.js';
@@ -26,13 +25,12 @@ export function createApollo(httpLink: HttpLink) {
 
 const routes: Routes = [
  // { path: ':country', outlet: 'content',  component: DashboardComponent},
-  { path: '', outlet: 'content',  component: TopTenComponent},
+  { path: '', component: TopTenComponent},
   { path: '', outlet: 'secondary-tools',  component: ToolsComponent}
 ];
 
 @NgModule({
   declarations: [
-    DashboardComponent,
     TopTenComponent,
     RecentCasesComponent,
     ToolsComponent
@@ -50,7 +48,7 @@ const routes: Routes = [
     MatButtonModule
   ],
   exports: [
-    DashboardComponent,ApolloModule
+    ApolloModule
   ]
 })
 export class DashboardModule { }
