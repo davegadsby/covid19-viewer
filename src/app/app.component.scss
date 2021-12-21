@@ -6,12 +6,8 @@
   }
 
   mat-toolbar {
-      * {
-        cursor: pointer;
-      }
       .hide {
-          height: 0;
-    
+          display: none;
     } 
   }
 

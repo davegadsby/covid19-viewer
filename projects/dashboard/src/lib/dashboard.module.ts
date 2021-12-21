@@ -24,7 +24,6 @@ export function createApollo(httpLink: HttpLink) {
 }
 
 const routes: Routes = [
- // { path: ':country', outlet: 'content',  component: DashboardComponent},
   { path: '', component: TopTenComponent},
   { path: '', outlet: 'secondary-tools',  component: ToolsComponent}
 ];

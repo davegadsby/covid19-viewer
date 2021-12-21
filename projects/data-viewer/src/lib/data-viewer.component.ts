@@ -106,15 +106,15 @@ export class DataViewerComponent implements OnInit {
           showLine: false,
           pointRadius: 0,
           borderWidth: 0,
-          backgroundColor: 'rgba(0,0,0, 0.5)',
+          backgroundColor: '#3f51b522',
         }
 
         const weekAverageDataSeries = {
           data: weekAverage,
           spanGaps: true,
           label: '7 day average',
-          borderColor: '#FF4081',
-          pointBackgroundColor: '#FF4081',
+          borderColor: '#3f51b5',
+          pointBackgroundColor: '#3f51b5',
           showLine: true,
           pointRadius: 0,
           borderWidth: 2,
