@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { map, Observable, take } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'lib-top-ten',
   templateUrl: './top-ten.component.html',
-  styleUrls: ['./top-ten.component.css']
+  styleUrls: ['./top-ten.component.scss']
 })
 export class TopTenComponent implements OnInit {
 

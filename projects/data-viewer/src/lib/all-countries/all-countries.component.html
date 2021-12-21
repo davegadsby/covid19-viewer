@@ -1,6 +1,6 @@
 <div class="nav">
-    <mat-selection-list #countries [multiple]="false">
-      <mat-list-option *ngFor="let country of countries$ | async" [value]="country"
+    <mat-selection-list #countryList [multiple]="false">
+      <mat-list-option *ngFor="let country of countries" [value]="country"
        [routerLink]="[ '../../country', country]" routerLinkActive="active">
         {{country}}
       </mat-list-option>

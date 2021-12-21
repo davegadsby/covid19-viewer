@@ -17,6 +17,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AllCountriesComponent } from './all-countries/all-countries.component';
 import { SearchComponent } from './search/search.component';
 import { ToolsComponent } from './tools/tools.component';
+import { CountryService } from './country.service';
+import { CountryResolver } from './country.resolver';
 Chart.register(...registerables);
 
 const uri = 'https://covid19-graphql.now.sh/'; // <-- add the URL of the GraphQL server here
@@ -30,6 +32,7 @@ export function createApollo(httpLink: HttpLink) {
 const routes: Routes = [
   {
     path: 'country/:country',
+    resolve: { countries: CountryResolver },
     children: [
       {
         path: '',
@@ -65,20 +68,22 @@ const routes: Routes = [
     DataViewerComponent, AllCountriesComponent, SearchComponent
   ],
   providers: [
+    CountryService,
+    CountryResolver,
     {
       provide: APOLLO_OPTIONS,
       useFactory: createApollo,
       deps: [HttpLink],
-    },
+    }
   ],
   imports: [
-    RouterModule.forChild(routes),
     HttpLinkModule, ApolloModule, HttpClientModule, MatCardModule, ReactiveFormsModule,
     MatListModule, CommonModule, MatAutocompleteModule, MatFormFieldModule, MatInputModule,
+    RouterModule.forChild(routes),
 
   ],
   exports: [
-    DataViewerComponent, ApolloModule
+    DataViewerComponent
   ]
 })
 export class DataViewerModule { }

@@ -12,26 +12,14 @@ import { map, Observable } from 'rxjs';
 })
 export class AllCountriesComponent implements OnInit {
 
-  countries$!: Observable<string[]>;
+  countries!: string[];
 
-  constructor(private apollo: Apollo, 
-    private router: Router, private activatedRoute: ActivatedRoute ) {
+  constructor(private activatedRoute: ActivatedRoute ) {
 
-    this.countries$ = this.apollo
-      .watchQuery({
-        query: gql`
-      {
-          countries(names: []) {
-            name
-            
-          }
-        }
-`,
-      })
-      .valueChanges.pipe(map((payload: any) => payload.data.countries.map((c: any) => c.name)));
   }
 
   ngOnInit(): void {
-
+    console.log(this.activatedRoute.snapshot.data);
+    this.countries = this.activatedRoute.snapshot.data['countries'] as string[];
   }
 }
