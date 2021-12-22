@@ -18,9 +18,28 @@
   }
 
   .container{
-    flex-grow: 1;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+    "content"
   }
 
   #secondary-tools {
       font-weight: 300 !important;
+  }
+
+  #loader{
+    grid-area: content;
+    display: contents;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  mat-sidenav-container {
+    grid-area: content;
   }

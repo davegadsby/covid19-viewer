@@ -6,10 +6,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { LoadingComponent } from './loading/loading.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent, LoadingComponent
   ],
   imports: [
     BrowserModule,
@@ -17,9 +20,13 @@ import { MatButtonModule } from '@angular/material/button';
     BrowserAnimationsModule,
     MatSidenavModule,
     MatToolbarModule,
-    MatButtonModule
+    MatButtonModule,
+    MatProgressBarModule,
+    OverlayModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+}

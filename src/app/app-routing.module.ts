@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LoadingComponent } from './loading/loading.component';
 
 const routes: Routes = [
   {
@@ -12,6 +13,11 @@ const routes: Routes = [
     pathMatch: 'prefix',
     loadChildren: () => import('../../projects/dashboard/src/lib/dashboard.module').then(m => m.DashboardModule),
   },
+  // {
+  //   path: '',
+  //   outlet: 'loader',
+  //   component: LoadingComponent
+  // },
 
   { path: '', pathMatch: 'full', redirectTo: '/detail/country/France' },
   // { path: '**', pathMatch: 'full', redirectTo: '' }
