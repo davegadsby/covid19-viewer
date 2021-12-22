@@ -37,22 +37,22 @@ export class DataViewerComponent implements OnInit {
   chart!: Chart;
   country!: string;
   timeSpans: TimeSpan[] = [
-    {value:  new Date('02-01-2020').toUTCString(), viewValue: 'All time'},
-    {value: this.createFromDate(1), viewValue: 'Last year'},
-    {value: this.createFromDate(undefined, 6), viewValue: 'Last 6 months'},
-    {value: this.createFromDate(undefined, 3), viewValue: 'Last 3 months'},
-    {value: this.createFromDate(undefined, 1), viewValue: 'Last month'},
+    { value: new Date('02-01-2020').toUTCString(), viewValue: 'All time' },
+    { value: this.createFromDate(1), viewValue: 'Last year' },
+    { value: this.createFromDate(undefined, 6), viewValue: 'Last 6 months' },
+    { value: this.createFromDate(undefined, 3), viewValue: 'Last 3 months' },
+    { value: this.createFromDate(undefined, 1), viewValue: 'Last month' },
   ];
   selectedTimeSpan: string = this.timeSpans[2].value;
-  cases!: Point[];
-  deaths!: Point[];
+  cases!: { data: Point[], averages: Point[]};
+  deaths!: { data: Point[], averages: Point[]};
 
-  constructor(private apollo: Apollo, private route: ActivatedRoute) {}
+  constructor(private apollo: Apollo, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.country = params['country'];
-      if (this.country) { 
+      if (this.country) {
         this.plot();
       }
     })
@@ -65,131 +65,86 @@ export class DataViewerComponent implements OnInit {
   private createFromDate(numberOfYears?: number, numberOfMonths?: number): string {
 
     const date = new Date(Date.now())
-    if(numberOfYears) {
+    if (numberOfYears) {
       date.setFullYear(date.getFullYear() - numberOfYears)
     }
-    if(numberOfMonths) {
+    if (numberOfMonths) {
       date.setMonth(date.getMonth() - numberOfMonths)
     }
+    // pad values
+    date.setDate(date.getDate() - 10)
     return date.toUTCString()
   }
 
   private plot() {
     const country$ = this.apollo
-    .query({
-      query: GET_COUNTRY_DATA,
-      variables: {
-        country: this.country,
-        dateFrom: this.selectedTimeSpan
-      }
-    })
-    .pipe(map((payload: any) => payload.data));
+      .query({
+        query: GET_COUNTRY_DATA,
+        variables: {
+          country: this.country,
+          dateFrom: this.selectedTimeSpan
+        }
+      })
+      .pipe(map((payload: any) => payload.data));
 
 
     country$.pipe(take(1)).subscribe((data: any) => {
-        const casesData: any[] = [];
-        const deathData: any[] = [];
-        const weekAverage: any[] = [];
+      const casesData: any[] = [];
+      const deathData: any[] = [];
+      const casesAverage: any[] = [];
+      const deathsAverage: any[] = [];
 
-        data.results.forEach((r: any, index: number, results: any[]) => {
-         
-          const date = DateTime.fromFormat(r.date, "yyyy-M-d").valueOf();
-          const cases = r.confirmed * r.growthRate
-            casesData.push({
-              x: date,
-              y: cases >= 0 ? cases : 0
-            });
-            let deaths = 0;
-            if(index > 1) {
-              deaths = r.deaths - results[index - 1].deaths;
-            } 
-            console.log(deaths);
-            
-            deathData.push({
-              x: date,
-              y: deaths >= 0 ? deaths : 0
-            })
+      data.results.forEach((r: any, index: number, results: any[]) => {
+        if (index <= 0) {
+          return;
+        }
+        const date = DateTime.fromFormat(r.date, "yyyy-M-d").valueOf();
+        const cases = Math.round(r.confirmed * r.growthRate);
+
+        casesData.push({
+          x: date,
+          y: cases >= 0 ? cases : 0
         });
+        let deaths = 0;
 
-        this.cases = casesData;
-        this.deaths = deathData;
+        deaths = Math.round(r.deaths - results[index - 1].deaths);
 
-        
+        deathData.push({
+          x: date,
+          y: deaths >= 0 ? deaths : 0
+        })
 
-        // const diffDataSeries = {
-        //   type: 'bar',
-        //   data: casesData,
-        //   spanGaps: false,
-        //   label: 'Daily cases',
-        //   borderColor: 'rgba(0,0,0, 0.5)',
-        //   pointBackgroundColor: '#51b522',
-        //   showLine: false,
-        //   pointRadius: 0,
-        //   borderWidth: 0,
-        //   backgroundColor: '#3f51b522',
-        // }
 
-        // const deathsDataSeries = {
-        //   type: 'bar',
-        //   data: deathData,
-        //   spanGaps: false,
-        //   label: 'Daily deaths',
-        //   borderColor: 'rgba(255,0,0, 0.5)',
-        //   pointBackgroundColor: 'rgba(255,0,0, 0.5)',
-        //   showLine: false,
-        //   pointRadius: 0,
-        //   borderWidth: 0,
-        //   backgroundColor: 'rgba(255,0,0, 0.5)',
-        // }
 
-        // const weekAverageDataSeries = {
-        //   data: weekAverage,
-        //   spanGaps: true,
-        //   label: '7 day average',
-        //   borderColor: '#3f51b5',
-        //   pointBackgroundColor: '#3f51b5',
-        //   showLine: true,
-        //   pointRadius: 0.5,
-        //   borderWidth: 3,
-        //   backgroundColor: 'rgba(0,0,0, 0)'
-        // }
+        let casesTotal = 0;
+        let deathsTotal = 0;
+        let count = 0;
+        for (let i = -7; i < 0; i++) {
+          const ind = index + i;
+          if (ind >= 0) {
+            casesTotal = casesTotal + casesData[ind].y;
+            deathsTotal = deathsTotal + deathData[ind].y;
+            count++;
+          }
+        }
+        casesAverage.push(({
+          x: date,
+          y:  count > 0 ? Math.round(casesTotal / count) : 0
+        }));
+        deathsAverage.push(({
+          x: date,
+          y: count > 0 ? Math.round(deathsTotal / count) : 0
+        }));
+      });
 
-        // this.chart.data.datasets = [weekAverageDataSeries, diffDataSeries, deathsDataSeries];
-        // this.chart.update();
-      })
+      this.cases = {
+        data: casesData.splice(7),
+        averages: casesAverage.splice(7)
+      }
+      this.deaths = {
+        data: deathData.splice(7),
+        averages: deathsAverage.splice(7)
+      }
+    })
   }
-
-  // private createPlot() {
-  //   let ctx = this.chartElement?.nativeElement;
-  //   ctx = ctx.getContext('2d');
-  //   this.chart = new Chart(ctx, {
-  //     type: 'line',
-  //     data: {
-  //       datasets: []
-  //     },
-  //     options: {
-  //       animation: {
-  //         duration: 0
-  //       },
-  //       scales: {
-  //         x: {
-  //           type: 'time',
-  //           time: {
-
-  //             tooltipFormat: 'DD'
-  //           },
-  //           grid: {
-  //             display: false,
-  //           }
-  //         },
-  //         y: {
-  //           grid: {
-  //             display: true,
-  //           }
-
-  //         }
-  //       },
-  //     }
-  //   });
-  // }
 }

@@ -16,54 +16,34 @@ export class ChartComponent implements OnInit, OnChanges {
   @ViewChild('chart', { static: true }) chartElement?: ElementRef;
   chart!: Chart;
 
-  @Input() data!: Point[];
-  weekAverage!: Point[];
-  @Input()colour: string = '#3f51b5';
+  @Input() points!: { data: Point[], averages: Point[] };
+
+  @Input() colour: string = '#3f51b5';
   @Input() title!: string;
+  diffDataSeries!: any;
+  weekAverageDataSeries!: any;
 
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
 
-    const dataChanges = changes['data'];
-    if (dataChanges) {
-      this.plot();
+    if (changes['points'].currentValue) {
+      this.plotData();
     }
   }
 
   ngOnInit(): void {
   }
 
-  private plot() {
+  private plotData() {
 
     if (!this.chart) {
       this.createChart();
     }
 
-    this.weekAverage = [];
-
-    this.data.forEach((element: any, index: number) => {
-
-      let count = 0;
-      let total = 0;
-      for (let i = -6; i <= 0; i++) {
-        const ind = index + i;
-
-        if (ind >= 0) {
-          total = total + this.data[ind].y
-          count++;
-        }
-      }
-      this.weekAverage.push(({
-        x: element.x,
-        y: count > 0 ? total / count : 0
-      })
-      );
-    });
-
-    const diffDataSeries: any = {
+    this.diffDataSeries = {
       type: 'bar',
-      data: this.data,
+      data: this.points.data,
       spanGaps: false,
       label: `Daily ${this.title.toLowerCase()}`,
       pointBackgroundColor: this.colour,
@@ -73,8 +53,8 @@ export class ChartComponent implements OnInit, OnChanges {
       backgroundColor: `${this.colour}22`,
     }
 
-    const weekAverageDataSeries = {
-      data: this.weekAverage,
+    this.weekAverageDataSeries = {
+      data: this.points.averages,
       spanGaps: true,
       label: `7 day average ${this.title.toLowerCase()}`,
       borderColor: this.colour,
@@ -83,11 +63,26 @@ export class ChartComponent implements OnInit, OnChanges {
       pointRadius: 0,
       borderWidth: 2.5
     }
-
-    this.chart.data.datasets = [ weekAverageDataSeries, diffDataSeries];
-    this.chart.update();
+    this.updateChart();
   }
 
+
+  private updateChart() {
+
+    this.chart.data.datasets = [this.diffDataSeries, this.weekAverageDataSeries];
+    this.chart.update();
+
+    const lastIndex = this.points.data.length - 1;
+    this.chart.tooltip?.setActiveElements([{
+      datasetIndex: 0,
+      index: lastIndex
+    },
+    {
+      datasetIndex: 1,
+      index: lastIndex
+    }], { x: 0, y: 0 });
+    this.chart.update();
+  }
 
   private createChart() {
     let ctx = this.chartElement?.nativeElement;
