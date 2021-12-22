@@ -1,24 +1,27 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from "graphql-tag";
-import { map } from 'rxjs';
+import { map, take } from 'rxjs';
 import { Chart } from 'chart.js';
 import { ActivatedRoute } from '@angular/router';
 import { fadeInAnimation } from './animations';
 import { DateTime } from 'luxon';
 
 const GET_COUNTRY_DATA = gql`
-query GetCountryData($country: String!) {
-countries(names: [$country]) {
-  name
-  results {
+query GetCountryData($country: String!, $dateFrom: String!) {
+  results(countries: [$country], date: {gt: $dateFrom} ) {
     date
     label: date
     confirmed
-  }
+    growthRate
 }
 }
 `
+
+interface TimeSpan {
+  value: string;
+  viewValue: string;
+}
 
 @Component({
   selector: 'lib-data-viewer',
@@ -32,49 +35,75 @@ export class DataViewerComponent implements OnInit {
   @ViewChild('chart', { static: true }) chartElement?: ElementRef;
   chart!: Chart;
   country!: string;
+  timeSpans: TimeSpan[] = [
+    {value:  new Date('02-01-2020').toUTCString(), viewValue: 'All time'},
+    {value: this.createFromDate(1), viewValue: 'Last year'},
+    {value: this.createFromDate(undefined, 6), viewValue: 'Last 6 months'},
+    {value: this.createFromDate(undefined, 3), viewValue: 'Last 3 months'},
+    {value: this.createFromDate(undefined, 1), viewValue: 'Last month'},
+  ];
+  selectedTimeSpan: string = this.timeSpans[0].value;
 
   constructor(private apollo: Apollo, private route: ActivatedRoute) {
+   
+    console.table(this.timeSpans);
+  }
+
+  ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.country = params['country'];
-      console.log('country', this.country);
-      if (this.country) {
-        this.plot(this.country);
+      if (this.country) { 
+        this.plot();
       }
     })
   }
 
-  private plot(country: string) {
-    this.apollo
-      .watchQuery({
-        query: GET_COUNTRY_DATA,
-        variables: {
-          country: country
-        }
-      })
-      .valueChanges.pipe(map((payload: any) => payload.data.countries)).subscribe((countries: any) => {
-        console.log('got data', countries);
+  dateChanged() {
+    this.plot();
+  }
 
+  private createFromDate(numberOfYears?: number, numberOfMonths?: number): string {
+
+    const date = new Date(Date.now())
+    if(numberOfYears) {
+      date.setFullYear(date.getFullYear() - numberOfYears)
+    }
+    if(numberOfMonths) {
+      date.setMonth(date.getMonth() - numberOfMonths)
+    }
+    return date.toUTCString()
+  }
+
+  private plot() {
+
+    if(!this.chart){
+      this.createPlot();
+    }
+
+    console.log('plotting', this.country, this.selectedTimeSpan);
+    const country$ = this.apollo
+    .query({
+      query: GET_COUNTRY_DATA,
+      variables: {
+        country: this.country,
+        dateFrom: this.selectedTimeSpan
+      }
+    })
+    .pipe(map((payload: any) => payload.data));
+
+
+    country$.pipe(take(1)).subscribe((data: any) => {
         const diffData: any[] = [];
         const weekAverage: any[] = [];
 
-        countries[0].results.forEach((r: any, index: number, results: any[]) => {
+        data.results.forEach((r: any, index: number, results: any[]) => {
          
           const date = DateTime.fromFormat(r.date, "yyyy-M-d").valueOf();
-         
-          if (index === 0) {
+          const cases = r.confirmed * r.growthRate
             diffData.push({
               x: date,
-              y: r.confirmed
+              y: cases >= 0 ? cases : 0
             });
-          } else {
-            const diff = r.confirmed - results[index - 1].confirmed;
-            const newCases = diff > 0 ? diff : 0;
-
-            diffData.push({
-              x: date,
-              y: newCases
-            });
-          }
         });
 
         diffData.forEach((element: any, index: number) => {
@@ -126,13 +155,7 @@ export class DataViewerComponent implements OnInit {
       })
   }
 
-  ngOnInit(): void {
-    this.createPlot();
-  }
-
   private createPlot() {
-    console.log('creating plot');
-
     let ctx = this.chartElement?.nativeElement;
     ctx = ctx.getContext('2d');
     this.chart = new Chart(ctx, {
@@ -141,6 +164,9 @@ export class DataViewerComponent implements OnInit {
         datasets: []
       },
       options: {
+        animation: {
+          duration: 0
+        },
         scales: {
           x: {
             type: 'time',

@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import {Chart} from 'chart.js';
+import { Chart } from 'chart.js';
 import gql from 'graphql-tag';
 import { DateTime } from 'luxon';
 import { map } from 'rxjs';
@@ -20,7 +20,7 @@ query GetCountryData($country: String!, $date: String!) {
   templateUrl: './recent-cases.component.html',
   styleUrls: ['./recent-cases.component.scss']
 })
-export class RecentCasesComponent implements OnInit, OnChanges {
+export class RecentCasesComponent implements OnChanges {
 
   @ViewChild('chart', { static: true }) chartElement?: ElementRef;
   chart!: Chart;
@@ -30,16 +30,15 @@ export class RecentCasesComponent implements OnInit, OnChanges {
   constructor(private apollo: Apollo) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['country'].currentValue) {
+    if (changes['country'].currentValue) {
+      if (!this.chart) {
+        this.createChart();
+      }
       this.render(changes['country'].currentValue);
     }
   }
 
-  ngOnInit(): void {
-    this.createPlot();
-  }
-
-  private createPlot() {
+  private createChart() {
     console.log('creating plot');
 
     let ctx = this.chartElement?.nativeElement;
@@ -50,14 +49,17 @@ export class RecentCasesComponent implements OnInit, OnChanges {
         datasets: []
       },
       options: {
-          plugins: {
-            legend: {
-              title: {
-                display: false,
-              },
+        animation: {
+          duration: 0
+        },
+        plugins: {
+          legend: {
+            title: {
               display: false,
-            }
-          },
+            },
+            display: false,
+          }
+        },
         scales: {
           x: {
             type: 'time',
@@ -83,7 +85,7 @@ export class RecentCasesComponent implements OnInit, OnChanges {
   private render(country: string) {
 
     const date = new Date(Date.now());
-    date.setMonth(date.getMonth() -1);
+    date.setMonth(date.getMonth() - 1);
 
     this.apollo
       .watchQuery({
@@ -94,18 +96,18 @@ export class RecentCasesComponent implements OnInit, OnChanges {
         }
       })
       .valueChanges.pipe(map((payload: any) => payload.data)).subscribe((result: any) => {
-        
+
         const diffData: any[] = [];
         const weekAverage: any[] = [];
 
         result.lastMonth.forEach((r: any, index: number, results: any[]) => {
-         
+
           const date = DateTime.fromFormat(r.date, "yyyy-M-d").valueOf();
-        
-            diffData.push({
-              x: date,
-              y: r.confirmed * r.growthRate
-            });
+
+          diffData.push({
+            x: date,
+            y: r.confirmed * r.growthRate
+          });
         });
 
         diffData.forEach((element: any, index: number) => {

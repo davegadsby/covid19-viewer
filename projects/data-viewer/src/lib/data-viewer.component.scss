@@ -16,3 +16,10 @@ mat-card{
   width: fit-content;
   height: fit-content;
 }
+
+span{ 
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  gap: 1rem;
+}

@@ -1,4 +1,14 @@
+<span>
 <h2>Daily case numbers by day reported</h2>
+<mat-form-field>
+  <mat-label>From</mat-label>
+  <mat-select [(value)]="selectedTimeSpan" (selectionChange)="dateChanged()">
+    <mat-option *ngFor="let option of timeSpans" [value]="option.value">
+      {{option.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+</span>
 
 <div class="chart-container">
   <canvas #chart></canvas>
