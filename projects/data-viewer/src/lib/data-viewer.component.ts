@@ -13,6 +13,7 @@ query GetCountryData($country: String!, $dateFrom: String!) {
     date
     label: date
     confirmed
+    deaths
     growthRate
 }
 }
@@ -42,7 +43,7 @@ export class DataViewerComponent implements OnInit {
     {value: this.createFromDate(undefined, 3), viewValue: 'Last 3 months'},
     {value: this.createFromDate(undefined, 1), viewValue: 'Last month'},
   ];
-  selectedTimeSpan: string = this.timeSpans[0].value;
+  selectedTimeSpan: string = this.timeSpans[2].value;
 
   constructor(private apollo: Apollo, private route: ActivatedRoute) {
    
@@ -93,20 +94,31 @@ export class DataViewerComponent implements OnInit {
 
 
     country$.pipe(take(1)).subscribe((data: any) => {
-        const diffData: any[] = [];
+        const casesData: any[] = [];
+        const deathData: any[] = [];
         const weekAverage: any[] = [];
 
         data.results.forEach((r: any, index: number, results: any[]) => {
          
           const date = DateTime.fromFormat(r.date, "yyyy-M-d").valueOf();
           const cases = r.confirmed * r.growthRate
-            diffData.push({
+            casesData.push({
               x: date,
               y: cases >= 0 ? cases : 0
             });
+            let deaths = 0;
+            if(index > 1) {
+              deaths = r.deaths - results[index - 1].deaths;
+            } 
+            console.log(deaths);
+            
+            deathData.push({
+              x: date,
+              y: deaths
+            })
         });
 
-        diffData.forEach((element: any, index: number) => {
+        casesData.forEach((element: any, index: number) => {
 
           let count = 0;
           let total = 0;
@@ -114,7 +126,7 @@ export class DataViewerComponent implements OnInit {
             const ind = index + i;
 
             if (ind >= 0) {
-              total = total + diffData[ind].y
+              total = total + casesData[ind].y
               count++;
             }
           }
@@ -127,15 +139,28 @@ export class DataViewerComponent implements OnInit {
 
         const diffDataSeries = {
           type: 'bar',
-          data: diffData,
+          data: casesData,
           spanGaps: false,
           label: 'Daily cases',
           borderColor: 'rgba(0,0,0, 0.5)',
-          pointBackgroundColor: '#FF4081',
+          pointBackgroundColor: '#51b522',
           showLine: false,
           pointRadius: 0,
           borderWidth: 0,
           backgroundColor: '#3f51b522',
+        }
+
+        const deathsDataSeries = {
+          type: 'bar',
+          data: deathData,
+          spanGaps: false,
+          label: 'Daily deaths',
+          borderColor: 'rgba(255,0,0, 0.5)',
+          pointBackgroundColor: 'rgba(255,0,0, 0.5)',
+          showLine: false,
+          pointRadius: 0,
+          borderWidth: 0,
+          backgroundColor: 'rgba(255,0,0, 0.5)',
         }
 
         const weekAverageDataSeries = {
@@ -145,12 +170,12 @@ export class DataViewerComponent implements OnInit {
           borderColor: '#3f51b5',
           pointBackgroundColor: '#3f51b5',
           showLine: true,
-          pointRadius: 0,
-          borderWidth: 2,
+          pointRadius: 0.5,
+          borderWidth: 3,
           backgroundColor: 'rgba(0,0,0, 0)'
         }
 
-        this.chart.data.datasets = [weekAverageDataSeries, diffDataSeries];
+        this.chart.data.datasets = [weekAverageDataSeries, diffDataSeries, deathsDataSeries];
         this.chart.update();
       })
   }

@@ -17,7 +17,6 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AllCountriesComponent } from './all-countries/all-countries.component';
 import { SearchComponent } from './search/search.component';
-import { ToolsComponent } from './tools/tools.component';
 import { CountryService } from './country.service';
 import { CountryResolver } from './country.resolver';
 Chart.register(...registerables);
@@ -38,11 +37,6 @@ const routes: Routes = [
       {
         path: '',
         component: DataViewerComponent
-      },
-      {
-        path: '',
-        outlet: 'secondary-tools',
-        component: ToolsComponent
       },
       {
         path: '',
