@@ -31,7 +31,6 @@ export class TopTenComponent implements OnInit {
 `,
       }).valueChanges.pipe(map((payload: any) => payload.data.countries));
 
-
     const latest$ = allCountries$.pipe(map(countries => countries.map((r: any) => ({name: r.name, new: Math.round( r.latest.cases * r.latest.growthRate), ...r.latest})   )));
     this.topTen$ = latest$.pipe(map(l => l.sort(this.compare).slice(0,10)));
     this.topTen$.subscribe(r => console.log(r));

@@ -86,16 +86,17 @@ export class RecentCasesComponent implements OnChanges {
 
     const date = new Date(Date.now());
     date.setMonth(date.getMonth() - 1);
+    date.setDate(date.getDate() - 9);
 
     this.apollo
-      .watchQuery({
+      .query({
         query: GET_COUNTRY_DATA,
         variables: {
           country: country,
           date: date.toUTCString()
         }
       })
-      .valueChanges.pipe(map((payload: any) => payload.data)).subscribe((result: any) => {
+      .pipe(map((payload: any) => payload.data)).subscribe((result: any) => {
 
         const diffData: any[] = [];
         const weekAverage: any[] = [];
@@ -103,10 +104,11 @@ export class RecentCasesComponent implements OnChanges {
         result.lastMonth.forEach((r: any, index: number, results: any[]) => {
 
           const date = DateTime.fromFormat(r.date, "yyyy-M-d").valueOf();
+          const change = Math.round(r.confirmed * r.growthRate);
 
           diffData.push({
             x: date,
-            y: r.confirmed * r.growthRate
+            y: change > 0 ? change : 0
           });
         });
 
@@ -124,14 +126,14 @@ export class RecentCasesComponent implements OnChanges {
           }
           weekAverage.push(({
             x: element.x,
-            y: count > 0 ? total / count : 0
+            y: count > 0 ? Math.round(total / count) : 0
           })
           );
         });
 
         const diffDataSeries = {
           type: 'bar',
-          data: diffData,
+          data: diffData.splice(7),
           spanGaps: false,
           label: 'Daily cases',
           borderColor: 'rgba(0,0,0, 0.5)',
@@ -143,7 +145,7 @@ export class RecentCasesComponent implements OnChanges {
         }
 
         const weekAverageDataSeries = {
-          data: weekAverage,
+          data: weekAverage.splice(7),
           spanGaps: true,
           label: '7 day average',
           borderColor: '#FF4081',
@@ -156,8 +158,6 @@ export class RecentCasesComponent implements OnChanges {
 
         this.chart.data.datasets = [weekAverageDataSeries, diffDataSeries];
         this.chart.update();
-
       })
   }
-
 }

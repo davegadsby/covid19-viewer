@@ -1,20 +1,10 @@
-<mat-card *ngFor="let country of topTen$ | async" >
-    <mat-card-subtitle>{{country.name}}</mat-card-subtitle>
-    <mat-card-title>{{country.new | number: '1.0-0' }} cases</mat-card-title>
-
-<!-- <h1>{{country.name}}</h1>
-<div class="headline">
-    <h2>{{country.date}}:</h2>
-    <h2>{{country.new | number: '1.0-0' }} cases</h2>
-  </div> -->
+<mat-card *ngFor="let country of topTen$ | async">
+  <mat-card-subtitle>{{country.name}}</mat-card-subtitle>
+  <mat-card-title>{{country.new | number: '1.0-0' }} cases</mat-card-title>
   <mat-card-content>
-  <recent-cases [country]="country.name"> </recent-cases>
-</mat-card-content>
-<mat-card-actions align="end">
+    <recent-cases [country]="country.name"> </recent-cases>
+  </mat-card-content>
+  <mat-card-actions align="end">
     <button mat-button [routerLink]="[ '/detail/country',country.name]">VIEW</button>
-
   </mat-card-actions>
-  <!-- <mat-card-footer>
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-  </mat-card-footer> -->
 </mat-card>

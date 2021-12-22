@@ -15,7 +15,7 @@ import { RecentCasesComponent } from './recent-cases/recent-cases.component';
 import { ToolsComponent } from './tools/tools.component';
 Chart.register(...registerables);
 
-const uri = 'https://covid19-graphql.now.sh/'; // <-- add the URL of the GraphQL server here
+const uri = 'https://covid19-graphql.now.sh/';
 export function createApollo(httpLink: HttpLink) {
   return {
     link: httpLink.create({ uri }),
