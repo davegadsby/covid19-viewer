@@ -1,15 +1,9 @@
-.chart-container {
-  position: relative;
-  margin-right: auto;
-  height: 40vh;
-  width: 90%;
-}
-
 :host{
   padding: 2rem;
   display: flex;
   flex-direction: column;
   height: inherit;
+  gap: 1rem;
 }
 
 mat-card{

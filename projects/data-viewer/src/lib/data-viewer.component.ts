@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from "graphql-tag";
 import { map, take } from 'rxjs';
-import { Chart } from 'chart.js';
+import { Chart, Point } from 'chart.js';
 import { ActivatedRoute } from '@angular/router';
 import { fadeInAnimation } from './animations';
 import { DateTime } from 'luxon';
@@ -44,11 +44,10 @@ export class DataViewerComponent implements OnInit {
     {value: this.createFromDate(undefined, 1), viewValue: 'Last month'},
   ];
   selectedTimeSpan: string = this.timeSpans[2].value;
+  cases!: Point[];
+  deaths!: Point[];
 
-  constructor(private apollo: Apollo, private route: ActivatedRoute) {
-   
-    console.table(this.timeSpans);
-  }
+  constructor(private apollo: Apollo, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -76,12 +75,6 @@ export class DataViewerComponent implements OnInit {
   }
 
   private plot() {
-
-    if(!this.chart){
-      this.createPlot();
-    }
-
-    console.log('plotting', this.country, this.selectedTimeSpan);
     const country$ = this.apollo
     .query({
       query: GET_COUNTRY_DATA,
@@ -114,103 +107,89 @@ export class DataViewerComponent implements OnInit {
             
             deathData.push({
               x: date,
-              y: deaths
+              y: deaths >= 0 ? deaths : 0
             })
         });
 
-        casesData.forEach((element: any, index: number) => {
+        this.cases = casesData;
+        this.deaths = deathData;
 
-          let count = 0;
-          let total = 0;
-          for (let i = -6; i <= 0; i++) {
-            const ind = index + i;
+        
 
-            if (ind >= 0) {
-              total = total + casesData[ind].y
-              count++;
-            }
-          }
-          weekAverage.push(({
-            x: element.x,
-            y: count > 0 ? total / count : 0
-          })
-          );
-        });
+        // const diffDataSeries = {
+        //   type: 'bar',
+        //   data: casesData,
+        //   spanGaps: false,
+        //   label: 'Daily cases',
+        //   borderColor: 'rgba(0,0,0, 0.5)',
+        //   pointBackgroundColor: '#51b522',
+        //   showLine: false,
+        //   pointRadius: 0,
+        //   borderWidth: 0,
+        //   backgroundColor: '#3f51b522',
+        // }
 
-        const diffDataSeries = {
-          type: 'bar',
-          data: casesData,
-          spanGaps: false,
-          label: 'Daily cases',
-          borderColor: 'rgba(0,0,0, 0.5)',
-          pointBackgroundColor: '#51b522',
-          showLine: false,
-          pointRadius: 0,
-          borderWidth: 0,
-          backgroundColor: '#3f51b522',
-        }
+        // const deathsDataSeries = {
+        //   type: 'bar',
+        //   data: deathData,
+        //   spanGaps: false,
+        //   label: 'Daily deaths',
+        //   borderColor: 'rgba(255,0,0, 0.5)',
+        //   pointBackgroundColor: 'rgba(255,0,0, 0.5)',
+        //   showLine: false,
+        //   pointRadius: 0,
+        //   borderWidth: 0,
+        //   backgroundColor: 'rgba(255,0,0, 0.5)',
+        // }
 
-        const deathsDataSeries = {
-          type: 'bar',
-          data: deathData,
-          spanGaps: false,
-          label: 'Daily deaths',
-          borderColor: 'rgba(255,0,0, 0.5)',
-          pointBackgroundColor: 'rgba(255,0,0, 0.5)',
-          showLine: false,
-          pointRadius: 0,
-          borderWidth: 0,
-          backgroundColor: 'rgba(255,0,0, 0.5)',
-        }
+        // const weekAverageDataSeries = {
+        //   data: weekAverage,
+        //   spanGaps: true,
+        //   label: '7 day average',
+        //   borderColor: '#3f51b5',
+        //   pointBackgroundColor: '#3f51b5',
+        //   showLine: true,
+        //   pointRadius: 0.5,
+        //   borderWidth: 3,
+        //   backgroundColor: 'rgba(0,0,0, 0)'
+        // }
 
-        const weekAverageDataSeries = {
-          data: weekAverage,
-          spanGaps: true,
-          label: '7 day average',
-          borderColor: '#3f51b5',
-          pointBackgroundColor: '#3f51b5',
-          showLine: true,
-          pointRadius: 0.5,
-          borderWidth: 3,
-          backgroundColor: 'rgba(0,0,0, 0)'
-        }
-
-        this.chart.data.datasets = [weekAverageDataSeries, diffDataSeries, deathsDataSeries];
-        this.chart.update();
+        // this.chart.data.datasets = [weekAverageDataSeries, diffDataSeries, deathsDataSeries];
+        // this.chart.update();
       })
   }
 
-  private createPlot() {
-    let ctx = this.chartElement?.nativeElement;
-    ctx = ctx.getContext('2d');
-    this.chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        datasets: []
-      },
-      options: {
-        animation: {
-          duration: 0
-        },
-        scales: {
-          x: {
-            type: 'time',
-            time: {
+  // private createPlot() {
+  //   let ctx = this.chartElement?.nativeElement;
+  //   ctx = ctx.getContext('2d');
+  //   this.chart = new Chart(ctx, {
+  //     type: 'line',
+  //     data: {
+  //       datasets: []
+  //     },
+  //     options: {
+  //       animation: {
+  //         duration: 0
+  //       },
+  //       scales: {
+  //         x: {
+  //           type: 'time',
+  //           time: {
 
-              tooltipFormat: 'DD'
-            },
-            grid: {
-              display: false,
-            }
-          },
-          y: {
-            grid: {
-              display: true,
-            }
+  //             tooltipFormat: 'DD'
+  //           },
+  //           grid: {
+  //             display: false,
+  //           }
+  //         },
+  //         y: {
+  //           grid: {
+  //             display: true,
+  //           }
 
-          }
-        },
-      }
-    });
-  }
+  //         }
+  //       },
+  //     }
+  //   });
+  // }
 }

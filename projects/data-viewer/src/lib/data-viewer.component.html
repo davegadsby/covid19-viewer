@@ -1,5 +1,5 @@
-<h2>{{country}}</h2>
 <span>
+  <h2>{{country}}</h2>
 <mat-form-field>
   <mat-label>From</mat-label>
   <mat-select [(value)]="selectedTimeSpan" (selectionChange)="dateChanged()">
@@ -10,6 +10,5 @@
 </mat-form-field>
 </span>
 
-<div class="chart-container">
-  <canvas #chart></canvas>
-</div>
+<chart [data]="cases" title="Cases"></chart>
+<chart [data]="deaths" title="Deaths" colour="#B00020"></chart>
