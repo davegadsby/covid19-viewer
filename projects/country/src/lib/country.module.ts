@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DataViewerComponent } from './data-viewer.component';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
@@ -21,6 +20,7 @@ import { CountryResolver } from './country.resolver';
 import { ChartComponent } from './chart/chart.component';
 import { ToolsComponent } from './tools/tools.component';
 import { DetailComponent } from './detail/detail.component';
+import { ChartListComponent } from './chart-list/chart-list.component';
 Chart.register(...registerables);
 
 const uri = 'https://covid19-graphql.now.sh/'; // <-- add the URL of the GraphQL server here
@@ -38,7 +38,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: DataViewerComponent
+        component: ChartListComponent
       },
       {
         path: '',
@@ -67,7 +67,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    DataViewerComponent, AllCountriesComponent, ChartComponent, ToolsComponent, DetailComponent
+    AllCountriesComponent, ChartComponent, ToolsComponent, DetailComponent, ChartListComponent
   ],
   providers: [
     CountryService,
@@ -84,9 +84,6 @@ const routes: Routes = [
     MatSelectModule,
     RouterModule.forChild(routes),
 
-  ],
-  exports: [
-    DataViewerComponent
   ]
 })
-export class DataViewerModule { }
+export class CountryModule { }

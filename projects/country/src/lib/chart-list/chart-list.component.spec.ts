@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DataViewerComponent } from './data-viewer.component';
+import { ChartListComponent } from './chart-list.component';
 
-describe('DataViewerComponent', () => {
-  let component: DataViewerComponent;
-  let fixture: ComponentFixture<DataViewerComponent>;
+describe('ChartListComponent', () => {
+  let component: ChartListComponent;
+  let fixture: ComponentFixture<ChartListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DataViewerComponent ]
+      declarations: [ ChartListComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DataViewerComponent);
+    fixture = TestBed.createComponent(ChartListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

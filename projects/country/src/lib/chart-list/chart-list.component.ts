@@ -4,9 +4,9 @@ import gql from "graphql-tag";
 import { map, take } from 'rxjs';
 import { Chart } from 'chart.js';
 import { ActivatedRoute } from '@angular/router';
-import { fadeInAnimation } from './animations';
+import { fadeInAnimation } from '../animations';
 import { DateTime } from 'luxon';
-import { Point } from './chart/chart.component';
+import { Point } from '../chart/chart.component';
 
 const GET_COUNTRY_DATA = gql`
 query GetCountryData($country: String!, $dateFrom: String!) {
@@ -25,13 +25,13 @@ interface TimeSpan {
 }
 
 @Component({
-  selector: 'lib-data-viewer',
-  templateUrl: 'data-viewer.component.html',
-  styleUrls: ['data-viewer.component.scss'],
+  selector: 'chart-list',
+  templateUrl: 'chart-list.component.html',
+  styleUrls: ['chart-list.component.scss'],
   animations: [fadeInAnimation],
   host: { '[@fadeInAnimation]': '' }
 })
-export class DataViewerComponent implements OnInit {
+export class ChartListComponent implements OnInit {
 
   @ViewChild('chart', { static: true }) chartElement?: ElementRef;
   chart!: Chart;

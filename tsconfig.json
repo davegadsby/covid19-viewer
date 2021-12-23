@@ -8,18 +8,10 @@
         "dist/dashboard/dashboard",
         "dist/dashboard"
       ],
-      "data-viewer": [
-        "dist/data-viewer/data-viewer",
-        "dist/data-viewer"
+      "country": [
+        "dist/country/country",
+        "dist/country"
       ],
-      "nav": [
-        "dist/nav/nav",
-        "dist/nav"
-      ],
-      "shell": [
-        "dist/shell/shell",
-        "dist/shell"
-      ]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
