@@ -33,7 +33,7 @@ export function createApollo(httpLink: HttpLink) {
 
 const routes: Routes = [
   {
-    path: 'country/:country',
+    path: ':country',
     resolve: { countries: CountryResolver },
     children: [
       {

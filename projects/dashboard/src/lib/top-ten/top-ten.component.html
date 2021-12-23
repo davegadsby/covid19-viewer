@@ -5,6 +5,6 @@
     <recent-cases [country]="country.name"> </recent-cases>
   </mat-card-content>
   <mat-card-actions align="end">
-    <button mat-button [routerLink]="[ '/detail/country',country.name]" [queryParams]="{period: 'Last 3 months'}">VIEW</button>
+    <button mat-button [routerLink]="[ '/country',country.name]" [queryParams]="{period: 'Last 3 months'}">VIEW</button>
   </mat-card-actions>
 </mat-card>

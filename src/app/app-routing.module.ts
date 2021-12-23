@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'detail',
+    path: 'country',
     pathMatch: 'prefix',
     loadChildren: () => import('../../projects/country/src/lib/country.module').then(m => m.CountryModule),
   },
