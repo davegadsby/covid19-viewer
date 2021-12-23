@@ -31,7 +31,8 @@ export class AppComponent {
     navStartEvents.subscribe(() => {
       this.createLoadingOverlay();
       //Only show loading progress after 200ms
-      setTimeout(() => this.showLoadingOverlay(), 20);
+       setTimeout(() => this.showLoadingOverlay(), 200);
+       this.showLoadingOverlay();
     })
     navEndEvents.subscribe(() => {
       this.cleanUpOverlay();
