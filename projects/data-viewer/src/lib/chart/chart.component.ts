@@ -72,16 +72,16 @@ export class ChartComponent implements OnInit, OnChanges {
     this.chart.data.datasets = [this.diffDataSeries, this.weekAverageDataSeries];
     this.chart.update();
 
-    const lastIndex = this.points.data.length - 1;
-    this.chart.tooltip?.setActiveElements([{
-      datasetIndex: 0,
-      index: lastIndex
-    },
-    {
-      datasetIndex: 1,
-      index: lastIndex
-    }], { x: 0, y: 0 });
-    this.chart.update();
+    // const lastIndex = this.points.data.length - 1;
+    // this.chart.tooltip?.setActiveElements([{
+    //   datasetIndex: 0,
+    //   index: lastIndex
+    // },
+    // {
+    //   datasetIndex: 1,
+    //   index: lastIndex
+    // }], { x: 0, y: 0 });
+    // this.chart.update();
   }
 
   private createChart() {

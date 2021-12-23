@@ -3,17 +3,10 @@
   display: flex;
   flex-direction: column;
   height: inherit;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 mat-card{
   width: fit-content;
   height: fit-content;
-}
-
-span{ 
-  display: flex;
-  flex-direction: row;
-  align-items: end;
-  gap: 1rem;
 }

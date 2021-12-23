@@ -16,6 +16,7 @@ export class AppComponent {
   title = 'covid19-viewer';
   country!: string;
   openSidebar = false;
+  openASide = false;
   showSecondToolbar = false;
   private loadingOverlay!: OverlayRef | null;
 

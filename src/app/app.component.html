@@ -1,29 +1,31 @@
-
-<mat-toolbar color="primary" >
+<mat-toolbar color="primary">
 
   <mat-toolbar-row class="mat-elevation-z6">
     <button [routerLink]="['/dashboard']" mat-button>Covid-19 Viewer</button>
   </mat-toolbar-row>
 
-  <mat-toolbar-row [ngClass]="{'hide': !showSecondToolbar}" id="secondary-tools">
-    <router-outlet (activate)="showSecondToolbar = true" (deactivate)="showSecondToolbar = false" name="secondary-tools"></router-outlet>
+  <mat-toolbar-row id="tools">
+    <router-outlet (activate)="showSecondToolbar = true" (deactivate)="showSecondToolbar = false" name="tools">
+    </router-outlet>
   </mat-toolbar-row>
-  
+
 </mat-toolbar>
 <div class="container">
-  <mat-sidenav-container  [autosize]="openSidebar">
-  
+  <mat-sidenav-container [autosize]="openSidebar">
     <mat-sidenav mode="side" [opened]="openSidebar">
-        <div id="nav">
-            <router-outlet (activate)="openSidebar = true" (deactivate)="openSidebar = false" name='nav'></router-outlet>
-        </div>
+      <div id="nav">
+        <router-outlet (activate)="openSidebar = true" (deactivate)="openSidebar = false" name='nav'></router-outlet>
+      </div>
+    </mat-sidenav>
+    <mat-sidenav mode="side" [opened]="openASide" position="end">
+      <div id="aside">
+        <router-outlet (activate)="openASide = true" (deactivate)="openASide = false" name='aside'></router-outlet>
+      </div>
     </mat-sidenav>
     <mat-sidenav-content>
-        <div id="data-viewer">
-            <router-outlet></router-outlet>
-        </div>
+      <div id="data-viewer">
+        <router-outlet></router-outlet>
+      </div>
     </mat-sidenav-content>
   </mat-sidenav-container>
-
-  <!-- <router-outlet id="loader" name='loader'></router-outlet> -->
 </div>

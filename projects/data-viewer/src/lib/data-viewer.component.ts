@@ -2,16 +2,16 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from "graphql-tag";
 import { map, take } from 'rxjs';
-import { Chart, Point } from 'chart.js';
+import { Chart } from 'chart.js';
 import { ActivatedRoute } from '@angular/router';
 import { fadeInAnimation } from './animations';
 import { DateTime } from 'luxon';
+import { Point } from './chart/chart.component';
 
 const GET_COUNTRY_DATA = gql`
 query GetCountryData($country: String!, $dateFrom: String!) {
   results(countries: [$country], date: {gt: $dateFrom} ) {
     date
-    label: date
     confirmed
     deaths
     growthRate
@@ -43,9 +43,10 @@ export class DataViewerComponent implements OnInit {
     { value: this.createFromDate(undefined, 3), viewValue: 'Last 3 months' },
     { value: this.createFromDate(undefined, 1), viewValue: 'Last month' },
   ];
-  selectedTimeSpan: string = this.timeSpans[2].value;
+  selectedTimeSpan!: string;
   cases!: { data: Point[], averages: Point[]};
   deaths!: { data: Point[], averages: Point[]};
+  latest!: { date: string,  cases: number, deaths: number, casesAverage: number, deathsAverage: number }
 
   constructor(private apollo: Apollo, private route: ActivatedRoute) { }
 
@@ -54,6 +55,15 @@ export class DataViewerComponent implements OnInit {
       this.country = params['country'];
       if (this.country) {
         this.plot();
+      }
+    })
+    this.route.queryParams.subscribe(params => {
+      if(params['period']) {
+        const timeSpan = this.timeSpans.find(t => t.viewValue === params['period']);
+        if(timeSpan) {
+          this.selectedTimeSpan = timeSpan.value;
+          this.dateChanged();
+        }
       }
     })
   }
@@ -77,6 +87,10 @@ export class DataViewerComponent implements OnInit {
   }
 
   private plot() {
+    if(!this.country || !this.selectedTimeSpan){
+      return;
+    }
+    console.log(`DataViewer:Plotting data: ${this.country}, ${this.selectedTimeSpan}`)
     const country$ = this.apollo
       .query({
         query: GET_COUNTRY_DATA,
@@ -114,8 +128,6 @@ export class DataViewerComponent implements OnInit {
           y: deaths >= 0 ? deaths : 0
         })
 
-
-
         let casesTotal = 0;
         let deathsTotal = 0;
         let count = 0;
@@ -144,6 +156,14 @@ export class DataViewerComponent implements OnInit {
       this.deaths = {
         data: deathData.splice(7),
         averages: deathsAverage.splice(7)
+      }
+      const lastIndex = this.cases.data.length -1;
+      this.latest = { 
+        date: new Date(this.cases.data[lastIndex].x).toDateString(),
+        cases: this.cases.data[lastIndex].y, 
+        deaths: this.deaths.data[lastIndex].y, 
+        casesAverage: this.cases.averages[lastIndex].y, 
+        deathsAverage: this.deaths.averages[lastIndex].y  
       }
     })
   }

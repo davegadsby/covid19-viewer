@@ -16,10 +16,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AllCountriesComponent } from './all-countries/all-countries.component';
-import { SearchComponent } from './search/search.component';
 import { CountryService } from './country.service';
 import { CountryResolver } from './country.resolver';
 import { ChartComponent } from './chart/chart.component';
+import { ToolsComponent } from './tools/tools.component';
+import { DetailComponent } from './detail/detail.component';
 Chart.register(...registerables);
 
 const uri = 'https://covid19-graphql.now.sh/'; // <-- add the URL of the GraphQL server here
@@ -41,6 +42,11 @@ const routes: Routes = [
       },
       {
         path: '',
+        outlet: 'tools',
+        component: ToolsComponent
+      },
+      {
+        path: '',
         outlet: 'nav',
         component: AllCountriesComponent,
       },
@@ -50,10 +56,10 @@ const routes: Routes = [
         component: AllCountriesComponent,
       },
       {
-        path: 'search',
-        outlet: 'nav',
-        component: SearchComponent
-      }
+        path: '',
+        outlet: 'aside',
+        component: DetailComponent,
+      },
     ]
   },
  
@@ -61,7 +67,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    DataViewerComponent, AllCountriesComponent, SearchComponent, ChartComponent
+    DataViewerComponent, AllCountriesComponent, ChartComponent, ToolsComponent, DetailComponent
   ],
   providers: [
     CountryService,
