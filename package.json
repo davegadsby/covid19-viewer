@@ -1,6 +1,7 @@
 {
   "name": "covid19-viewer",
   "version": "0.0.0",
+  "author": "Dave Gadsby <davegadsby@gmail.com>",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
