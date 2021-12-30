@@ -8,6 +8,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { LoadingComponent } from './loading/loading.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatMenuModule } from '@angular/material/menu';
 import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatMenuModule,
     MatSidenavModule,
     MatToolbarModule,
     MatButtonModule,

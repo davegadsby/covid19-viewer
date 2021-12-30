@@ -16,7 +16,7 @@ query GetResults($country: String!, $date: String!) {
 `
 
 @Component({
-  selector: 'lib-detail',
+  selector: 'detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss']
 })
@@ -41,7 +41,7 @@ export class DetailComponent implements OnInit {
   private getLatestResults() {
 
     const fromDate = new Date(Date.now());
-    fromDate.setDate(fromDate.getDate() -3);
+    fromDate.setDate(fromDate.getDate() -4);
 
     const results$ = this.apollo
       .query({
@@ -54,10 +54,11 @@ export class DetailComponent implements OnInit {
       .pipe(map((payload: any) => payload.data.last2Days));
 
       results$.subscribe(results => {
+        
         const lastIndex = results.length -1;
         this.date = results[lastIndex].date;
         this.cases = Math.round(results[lastIndex].confirmed * results[lastIndex].growthRate);
-        this.deaths = results[lastIndex].deaths - results[lastIndex - 1].deaths;
+        this.deaths = (results[lastIndex].deaths - results[lastIndex - 1].deaths) ?? 0;
       });
   }
 

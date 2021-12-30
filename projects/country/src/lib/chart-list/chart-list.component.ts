@@ -1,7 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from "graphql-tag";
-import { map, take } from 'rxjs';
+import { map, Subscription, take } from 'rxjs';
 import { Chart } from 'chart.js';
 import { ActivatedRoute } from '@angular/router';
 import { fadeInAnimation } from '../animations';
@@ -31,7 +31,7 @@ interface TimeSpan {
   animations: [fadeInAnimation],
   host: { '[@fadeInAnimation]': '' }
 })
-export class ChartListComponent implements OnInit {
+export class ChartListComponent implements OnInit, OnDestroy {
 
   @ViewChild('chart', { static: true }) chartElement?: ElementRef;
   chart!: Chart;
@@ -44,33 +44,36 @@ export class ChartListComponent implements OnInit {
     { value: this.createFromDate(undefined, 1), viewValue: 'Last month' },
   ];
   selectedTimeSpan!: string;
-  cases!: { data: Point[], averages: Point[]};
-  deaths!: { data: Point[], averages: Point[]};
-  latest!: { date: string,  cases: number, deaths: number, casesAverage: number, deathsAverage: number }
+  cases!: { data: Point[], averages: Point[] };
+  deaths!: { data: Point[], averages: Point[] };
+  latest!: { date: string, cases: number, deaths: number, casesAverage: number, deathsAverage: number }
+  subs: Subscription = new Subscription;
 
-  constructor(private apollo: Apollo, private route: ActivatedRoute) { }
-
-  ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.country = params['country'];
-      if (this.country) {
+  constructor(private apollo: Apollo, private route: ActivatedRoute) {
+    this.subs = new Subscription;
+    this.subs.add(this.route.params.subscribe(params => {
+      const nextCountry = params['country'];
+      if (nextCountry && this.country !== nextCountry) {
+        this.country = nextCountry;
         this.plot();
       }
-    })
-    this.route.queryParams.subscribe(params => {
-      if(params['period']) {
-        const timeSpan = this.timeSpans.find(t => t.viewValue === params['period']);
-        if(timeSpan) {
-          this.selectedTimeSpan = timeSpan.value;
-          this.dateChanged();
-        }
+    }));
+    this.subs.add(this.route.queryParams.subscribe(params => {
+      const nextTimeSpan = this.timeSpans.find(t => t.viewValue === params['period']);
+      if (nextTimeSpan && this.selectedTimeSpan !== nextTimeSpan.value) {
+        this.selectedTimeSpan = nextTimeSpan.value;
+        this.plot();
       }
-    })
+    }));
   }
 
-  dateChanged() {
-    this.plot();
+  ngOnDestroy(): void {
+    if(this.subs) {
+      this.subs.unsubscribe();
+    }
   }
+
+  ngOnInit(): void {}
 
   private createFromDate(numberOfYears?: number, numberOfMonths?: number): string {
 
@@ -87,7 +90,7 @@ export class ChartListComponent implements OnInit {
   }
 
   private plot() {
-    if(!this.country || !this.selectedTimeSpan){
+    if (!this.country || !this.selectedTimeSpan) {
       return;
     }
     console.log(`DataViewer:Plotting data: ${this.country}, ${this.selectedTimeSpan}`)
@@ -141,7 +144,7 @@ export class ChartListComponent implements OnInit {
         }
         casesAverage.push(({
           x: date,
-          y:  count > 0 ? Math.round(casesTotal / count) : 0
+          y: count > 0 ? Math.round(casesTotal / count) : 0
         }));
         deathsAverage.push(({
           x: date,
@@ -157,13 +160,13 @@ export class ChartListComponent implements OnInit {
         data: deathData.splice(7),
         averages: deathsAverage.splice(7)
       }
-      const lastIndex = this.cases.data.length -1;
-      this.latest = { 
+      const lastIndex = this.cases.data.length - 1;
+      this.latest = {
         date: new Date(this.cases.data[lastIndex].x).toDateString(),
-        cases: this.cases.data[lastIndex].y, 
-        deaths: this.deaths.data[lastIndex].y, 
-        casesAverage: this.cases.averages[lastIndex].y, 
-        deathsAverage: this.deaths.averages[lastIndex].y  
+        cases: this.cases.data[lastIndex].y,
+        deaths: this.deaths.data[lastIndex].y,
+        casesAverage: this.cases.averages[lastIndex].y,
+        deathsAverage: this.deaths.averages[lastIndex].y
       }
     })
   }

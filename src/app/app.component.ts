@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import {MediaMatcher} from '@angular/cdk/layout';
 import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, RouterEvent } from '@angular/router';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
@@ -18,10 +19,13 @@ export class AppComponent {
   openSidebar = false;
   openASide = false;
   showSecondToolbar = false;
+  mobileQuery!: MediaQueryList;
+
   private loadingOverlay!: OverlayRef | null;
-
-
-  constructor( private route: ActivatedRoute, private router: Router, private overlay: Overlay) {
+  private _mobileQueryListener: () => void;
+  
+  constructor( private route: ActivatedRoute, private router: Router, private overlay: Overlay,
+    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     this.route.params.subscribe(params => {
       this.country = params['country'];
     })
@@ -37,6 +41,14 @@ export class AppComponent {
     navEndEvents.subscribe(() => {
       this.cleanUpOverlay();
     })
+
+    this.mobileQuery = media.matchMedia('(max-width: 800px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
+  }
+
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
   private cleanUpOverlay() {

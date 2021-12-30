@@ -25,6 +25,7 @@ export function createApollo(httpLink: HttpLink) {
 
 const routes: Routes = [
   { path: '', component: TopTenComponent},
+  { path: '', outlet:'content-small', component: TopTenComponent},
   { path: '', outlet: 'tools',  component: ToolsComponent}
 ];
 
