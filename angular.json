@@ -99,10 +99,19 @@
               "src/assets"
             ],
             "styles": [
-        
               "src/styles.scss"
             ],
             "scripts": []
+          }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "covid19-viewer:build:production",
+            "firebaseProject": "covid-19-viewer-ff582",
+            "firebaseHostingSite": "covid-19-viewer-ff582"
           }
         }
       }

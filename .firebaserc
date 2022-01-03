@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "covid-19-viewer-ff582": {
+      "hosting": {
+        "covid19-viewer": [
+          "covid-19-viewer-ff582"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "covid-19-viewer-ff582"
+  }
+}

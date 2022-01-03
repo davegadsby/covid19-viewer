@@ -10,6 +10,10 @@ import { LoadingComponent } from './loading/loading.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatMenuModule } from '@angular/material/menu';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideAnalytics,getAnalytics,ScreenTrackingService,UserTrackingService } from '@angular/fire/analytics';
+
 
 @NgModule({
   declarations: [
@@ -24,9 +28,14 @@ import { OverlayModule } from '@angular/cdk/overlay';
     MatToolbarModule,
     MatButtonModule,
     MatProgressBarModule,
-    OverlayModule
+    OverlayModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    //provideAnalytics(() => getAnalytics()),
+
   ],
-  providers: [],
+  providers: [
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
