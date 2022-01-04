@@ -1,11 +1,5 @@
 <mat-toolbar color="primary" *ngIf="mobileQuery.matches; else largeNav">
-  
   <button [routerLink]="['/dashboard']" mat-button>Covid-19 Viewer</button>
-
-  <!-- <router-outlet (activate)="showSecondToolbar = true" (deactivate)="showSecondToolbar = false" name="tools">
-  </router-outlet> -->
-
-
 </mat-toolbar>
 
 <ng-template #largeNav>

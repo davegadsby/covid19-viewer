@@ -30,13 +30,11 @@ export class AppComponent {
       this.country = params['country'];
     })
     const navStartEvents = this.router.events.pipe(filter(ev => ev instanceof NavigationStart));
-    const navEndEvents = this.router.events.pipe(filter(ev => !(ev instanceof NavigationStart)));
+    const navEndEvents = this.router.events.pipe(filter(ev => ev instanceof NavigationEnd));
 
     navStartEvents.subscribe(() => {
       this.createLoadingOverlay();
-      //Only show loading progress after 200ms
        setTimeout(() => this.showLoadingOverlay(), 200);
-       this.showLoadingOverlay();
     })
     navEndEvents.subscribe(() => {
       this.cleanUpOverlay();
