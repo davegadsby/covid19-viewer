@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {MediaMatcher} from '@angular/cdk/layout';
-import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, RouterEvent } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { LoadingComponent } from './loading/loading.component';
@@ -16,9 +16,9 @@ export class AppComponent {
 
   title = 'covid19-viewer';
   country!: string;
-  openSidebar = false;
-  openASide = false;
-  showSecondToolbar = false;
+  showNav = false;
+  showDetail = false;
+  showToolbar = false;
   mobileQuery!: MediaQueryList;
 
   private loadingOverlay!: OverlayRef | null;
