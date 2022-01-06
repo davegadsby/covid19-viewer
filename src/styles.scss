@@ -1,4 +1,5 @@
 @use '@angular/material' as mat;
+@import '~@angular/material/theming';
 
 @include mat.core();
 
@@ -39,3 +40,48 @@ $dark-theme: mat.define-dark-theme((
 //  @include mat.core-color($light-theme);
 //  @include mat.all-component-themes($light-theme);
 // }
+
+$background: map-get($light-theme, background);
+$foreground: map-get($light-theme, foreground);
+$accent: map-get($light-theme, accent);
+
+::-webkit-scrollbar {
+  width: 8px !important;
+  height: 8px !important;
+}
+
+::-webkit-scrollbar:hover {
+  width: 18px;
+  height: 18px;
+}
+
+::-webkit-scrollbar-track {
+  background: mat-color($foreground, text, 0.15);
+  border-radius: 4px;
+  margin: 4px;
+}
+
+::-webkit-scrollbar-track:horizontal {
+
+  border-top: 2px solid mat-color($background, card);
+  border-bottom: 2px solid mat-color($background, card);
+}
+
+::-webkit-scrollbar-track:vertical {
+
+  border-left: 2px solid mat-color($background, card);
+  border-right: 2px solid mat-color($background, card);
+}
+
+::-webkit-scrollbar-corner {
+  display: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #bebebe;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: mat-color($accent);
+}
