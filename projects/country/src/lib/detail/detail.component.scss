@@ -1,10 +1,11 @@
 .container{
-    width: 15rem;
-    padding: 0.5rem;
-    :not(strong){
-        font-weight: 300;
-    }
-    #title{
-        font-weight: initial;
-    }
+    width: 10rem;
+    margin: 0.5rem;
+}
+mat-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1rem;
+    padding-top: 1rem;
 }
