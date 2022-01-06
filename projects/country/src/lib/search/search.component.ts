@@ -7,7 +7,7 @@ import gql from 'graphql-tag';
 import { map, Observable, startWith } from 'rxjs';
 
 @Component({
-  selector: 'lib-search',
+  selector: 'search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
@@ -15,31 +15,32 @@ export class SearchComponent implements OnInit {
 
   myControl = new FormControl();
   options: string[] = [];
-  filteredOptions!: Observable<string[]>;
+  selectedCountry!: string;
+ // filteredOptions!: Observable<string[]>;
 
   ngOnInit() {
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => (typeof value === 'string' ? value : value.name)),
-      map(name => (name ? this._filter(name) : this.options.slice())),
-    );
+    // this.filteredOptions = this.myControl.valueChanges.pipe(
+    //   startWith(''),
+    //   map(value => (typeof value === 'string' ? value : value.name)),
+    //   map(name => (name ? this._filter(name) : this.options.slice())),
+    // );
   }
 
-  displayFn(country: string): string {
-    return country;
-  }
+  // displayFn(country: string): string {
+  //   return country;
+  // }
 
-  private _filter(name: string): string[] {
-    const filterValue = name.toLowerCase();
+  // private _filter(name: string): string[] {
+  //   const filterValue = name.toLowerCase();
 
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
-  }
+  //   return this.options.filter(option => option.toLowerCase().includes(filterValue));
+  // }
 
   constructor(private apollo: Apollo,
     private router: Router, private activatedRoute: ActivatedRoute) {
 
     this.activatedRoute.params.subscribe(params => {
-      this.myControl.setValue(params['country']);
+      this.selectedCountry = params['country'];
     })
 
     this.apollo

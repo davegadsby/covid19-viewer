@@ -24,6 +24,7 @@ import { ChartListComponent } from './chart-list/chart-list.component';
 import { CountrySmallComponent } from './country-small/country-small.component';
 import { SearchComponent } from './search/search.component';
 import { TimePeriodComponent } from './time-period/time-period.component';
+import { ToolsSmComponent } from './tools-sm/tools-sm.component';
 Chart.register(...registerables);
 
 const uri = 'https://covid19-graphql.now.sh/'; // <-- add the URL of the GraphQL server here
@@ -55,6 +56,11 @@ const routes: Routes = [
       },
       {
         path: '',
+        outlet: 'tools-sm',
+        component: ToolsSmComponent
+      },
+      {
+        path: '',
         outlet: 'nav',
         component: AllCountriesComponent,
       },
@@ -75,7 +81,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    AllCountriesComponent, ChartComponent, ToolsComponent, DetailComponent, ChartListComponent, CountrySmallComponent, SearchComponent, TimePeriodComponent
+    AllCountriesComponent, ChartComponent, ToolsComponent, DetailComponent, ChartListComponent, CountrySmallComponent, SearchComponent, TimePeriodComponent, ToolsSmComponent
   ],
   providers: [
     CountryService,

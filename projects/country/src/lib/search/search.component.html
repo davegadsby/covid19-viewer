@@ -1,14 +1,12 @@
 <div class="nav">
     <form class="example-form">
-        <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label>Country</mat-label>
-            <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
-                (optionSelected)="onSelectCountry($event)">
-                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        <mat-form-field class="example-full-width" >
+            <mat-select [(value)]="selectedCountry">
+                <mat-option *ngFor="let option of options" [value]="option"
+                [routerLink]="[ '../../country', option]" routerLinkActive="active" queryParamsHandling="preserve">
                     {{option}}
                 </mat-option>
-            </mat-autocomplete>
+              </mat-select>
         </mat-form-field>
     </form>
 </div>

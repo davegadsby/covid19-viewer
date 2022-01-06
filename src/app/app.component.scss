@@ -1,45 +1,52 @@
-  mat-card{
-    width: fit-content;
-    height: fit-content;
-  }
+mat-card {
+  width: fit-content;
+  height: fit-content;
+}
 
-  mat-toolbar {
-      .hide {
-          display: none;
-    } 
+mat-toolbar {
+  .hide {
+    display: none;
   }
+}
 
-  .container{
-    height: calc(100% - 8rem);
-    display: grid;
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr;
-    grid-template-areas: 
-    "content"
-  }
+.container {
+  height: calc(100% - 8rem);
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas: "content";
+}
 
-  #tools {
-      font-weight: 300 !important;
-  }
+.header-item-selected {
+  background: rgba(0, 0, 0, 0.2);
+}
+#title {
+  margin: 0.5rem;
+  font-size: 0.75rem;
+}
 
-  #detail{
-    max-width: 16rem;
-  }
+#tools {
+  font-weight: 300 !important;
+}
 
-  #loader{
-    grid-area: content;
-    display: contents;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
+#detail {
+  width: 12rem;
+}
 
-  mat-sidenav-container {
-    grid-area: content;
-  }
+#loader {
+  grid-area: content;
+  display: contents;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
 
-  mat-sidenav-content {
-    background-color: white;
-  }
+mat-sidenav-container {
+  grid-area: content;
+}
+
+mat-sidenav-content {
+  background-color: white;
+}

@@ -1,22 +1,24 @@
-<!-- Navbar for small display -->
-<mat-toolbar color="primary" *ngIf="mobileQuery.matches; else largeNav">
-  <button [routerLink]="['/dashboard']" mat-button>Covid-19 Viewer</button>
-</mat-toolbar>
+<mat-toolbar color="primary">
+  <mat-toolbar-row id="top-toolbar" class="mat-elevation-z6">
+    <h5 id="title">Covid-19 Viewer</h5>
+    <a mat-button  [routerLink]="'/dashboard'" routerLinkActive="header-item-selected"> Dashboard</a>
+    <a mat-button  [routerLink]="'/country'" routerLinkActive="header-item-selected"> Details</a>
+  </mat-toolbar-row>
 
-<!-- Navbar for large display -->
-<ng-template #largeNav>
-  <mat-toolbar color="primary">
-    <mat-toolbar-row id="top-toolbar" class="mat-elevation-z6">
-      <button [routerLink]="['/dashboard']" mat-button>Covid-19 Viewer</button>
-    </mat-toolbar-row>
+  <mat-toolbar-row id="tools" *ngIf="mobileQuery.matches; else largeTools">
+    <router-outlet (activate)="showToolbar = true" (deactivate)="showToolbar = false" name="tools-sm">
+    </router-outlet>
+  </mat-toolbar-row>
 
+  <ng-template #largeTools>
     <mat-toolbar-row id="tools">
       <router-outlet (activate)="showToolbar = true" (deactivate)="showToolbar = false" name="tools">
       </router-outlet>
     </mat-toolbar-row>
+  </ng-template>
 
-  </mat-toolbar>
-</ng-template>
+</mat-toolbar>
+
 
 <!-- Content for small display -->
 <div *ngIf="mobileQuery.matches; else largeDisplay">
