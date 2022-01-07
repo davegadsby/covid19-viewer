@@ -1,5 +1,9 @@
 # Covid19Viewer
 
+Example project for building responsive micro frontends.
+
+Uses covid data using the api from https://github.com/rlindskog/covid19-graphql
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.3.
 
 ## Development server
