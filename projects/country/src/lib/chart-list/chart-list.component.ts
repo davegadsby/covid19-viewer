@@ -1,23 +1,11 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Apollo } from 'apollo-angular';
-import gql from "graphql-tag";
-import { map, Subscription, take } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { Chart } from 'chart.js';
 import { ActivatedRoute } from '@angular/router';
 import { fadeInAnimation } from '../animations';
 import { DateTime } from 'luxon';
 import { Point } from '../chart/chart.component';
-
-const GET_COUNTRY_DATA = gql`
-query GetCountryData($country: String!, $dateFrom: String!) {
-  results(countries: [$country], date: {gt: $dateFrom} ) {
-    date
-    confirmed
-    deaths
-    growthRate
-}
-}
-`
+import { CountryService } from '../country.service';
 
 interface TimeSpan {
   value: string;
@@ -33,47 +21,39 @@ interface TimeSpan {
 })
 export class ChartListComponent implements OnInit, OnDestroy {
 
-  @ViewChild('chart', { static: true }) chartElement?: ElementRef;
-  chart!: Chart;
-  country!: string;
-  timeSpans: TimeSpan[] = [
+  private subs: Subscription = new Subscription;
+  private timeSpans: TimeSpan[] = [
     { value: new Date('02-01-2020').toUTCString(), viewValue: 'All time' },
     { value: this.createFromDate(1), viewValue: 'Last year' },
     { value: this.createFromDate(undefined, 6), viewValue: 'Last 6 months' },
     { value: this.createFromDate(undefined, 3), viewValue: 'Last 3 months' },
     { value: this.createFromDate(undefined, 1), viewValue: 'Last month' },
   ];
-  selectedTimeSpan!: string;
+  private country!: string;
+  private selectedTimeSpan = this.timeSpans[2].value;
+
+  @ViewChild('chart', { static: true }) chartElement?: ElementRef;
+
+  chart!: Chart;
+  
   cases!: { data: Point[], averages: Point[] };
   deaths!: { data: Point[], averages: Point[] };
-  latest!: { date: string, cases: number, deaths: number, casesAverage: number, deathsAverage: number }
-  subs: Subscription = new Subscription;
 
-  constructor(private apollo: Apollo, private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private service: CountryService) {
+
     this.subs = new Subscription;
-    this.subs.add(this.route.params.subscribe(params => {
-      const nextCountry = params['country'];
-      if (nextCountry && this.country !== nextCountry) {
-        this.country = nextCountry;
-        this.plot();
-      }
-    }));
-    this.subs.add(this.route.queryParams.subscribe(params => {
-      const nextTimeSpan = this.timeSpans.find(t => t.viewValue === params['period']);
-      if (nextTimeSpan && this.selectedTimeSpan !== nextTimeSpan.value) {
-        this.selectedTimeSpan = nextTimeSpan.value;
-        this.plot();
-      }
-    }));
+    this.subscribeToCountry();
+    this.subscribeToTimePeriod();
   }
 
   ngOnDestroy(): void {
-    if(this.subs) {
+
+    if (this.subs) {
       this.subs.unsubscribe();
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   private createFromDate(numberOfYears?: number, numberOfMonths?: number): string {
 
@@ -89,23 +69,32 @@ export class ChartListComponent implements OnInit, OnDestroy {
     return date.toUTCString()
   }
 
+  private subscribeToTimePeriod() {
+    this.subs.add(this.route.queryParams.subscribe(params => {
+      const nextTimeSpan = this.timeSpans.find(t => t.viewValue === params['period']);
+      if (nextTimeSpan && this.selectedTimeSpan !== nextTimeSpan.value) {
+        this.selectedTimeSpan = nextTimeSpan.value;
+        this.plot();
+      }
+    }));
+  }
+
+  private subscribeToCountry() {
+    this.subs.add(this.route.params.subscribe(params => {
+      const nextCountry = params['country'];
+      if (nextCountry && this.country !== nextCountry) {
+        this.country = nextCountry;
+        this.plot();
+      }
+    }));
+  }
+
   private plot() {
     if (!this.country || !this.selectedTimeSpan) {
       return;
     }
-    console.log(`DataViewer:Plotting data: ${this.country}, ${this.selectedTimeSpan}`)
-    const country$ = this.apollo
-      .query({
-        query: GET_COUNTRY_DATA,
-        variables: {
-          country: this.country,
-          dateFrom: this.selectedTimeSpan
-        }
-      })
-      .pipe(map((payload: any) => payload.data));
 
-
-    country$.pipe(take(1)).subscribe((data: any) => {
+    this.service.getDetails(this.country, this.selectedTimeSpan).pipe(take(1)).subscribe((data: any) => {
       const casesData: any[] = [];
       const deathData: any[] = [];
       const casesAverage: any[] = [];
@@ -159,14 +148,6 @@ export class ChartListComponent implements OnInit, OnDestroy {
       this.deaths = {
         data: deathData.splice(7),
         averages: deathsAverage.splice(7)
-      }
-      const lastIndex = this.cases.data.length - 1;
-      this.latest = {
-        date: new Date(this.cases.data[lastIndex].x).toDateString(),
-        cases: this.cases.data[lastIndex].y,
-        deaths: this.deaths.data[lastIndex].y,
-        casesAverage: this.cases.averages[lastIndex].y,
-        deathsAverage: this.deaths.averages[lastIndex].y
       }
     })
   }

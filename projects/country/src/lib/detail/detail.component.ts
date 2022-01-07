@@ -1,19 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
-import { map } from 'rxjs';
-
-const GET_COUNTRY_DATA = gql`
-query GetResults($country: String!, $date: String!) {
-  last2Days:results(countries: [$country], date: {gt: $date}){
-    date
-    confirmed
-    deaths
-    growthRate
-  }
-  }
-`
+import { take } from 'rxjs';
+import { CountryService } from '../country.service';
 
 @Component({
   selector: 'detail',
@@ -22,44 +10,30 @@ query GetResults($country: String!, $date: String!) {
 })
 export class DetailComponent implements OnInit {
 
-  latest: {cases: number, deaths: number} = {cases: 10, deaths: 10};
+  latest!: { cases: number, deaths: number };
   date!: string;
   country!: string;
   cases!: number;
   deaths!: number;
 
-  constructor(private route: ActivatedRoute, private apollo: Apollo) {
+  constructor(private route: ActivatedRoute, private service: CountryService) {
     this.route.params.subscribe(params => {
       this.country = params['country'];
       this.getLatestResults();
     })
-   }
+  }
 
   ngOnInit(): void {
   }
 
   private getLatestResults() {
 
-    const fromDate = new Date(Date.now());
-    fromDate.setDate(fromDate.getDate() -4);
+    this.service.getLatest(this.country).pipe(take(1)).subscribe(results => {
 
-    const results$ = this.apollo
-      .query({
-        query: GET_COUNTRY_DATA,
-        variables: {
-          country: this.country,
-          date: fromDate.toUTCString()
-        }
-      })
-      .pipe(map((payload: any) => payload.data.last2Days));
-
-      results$.subscribe(results => {
-        
-        const lastIndex = results.length -1;
-        this.date = results[lastIndex].date;
-        this.cases = Math.round(results[lastIndex].confirmed * results[lastIndex].growthRate);
-        this.deaths = (results[lastIndex].deaths - results[lastIndex - 1].deaths) ?? 0;
-      });
+      const lastIndex = results.length - 1;
+      this.date = results[lastIndex].date;
+      this.cases = Math.round(results[lastIndex].confirmed * results[lastIndex].growthRate);
+      this.deaths = (results[lastIndex].deaths - results[lastIndex - 1].deaths) ?? 0;
+    });
   }
-
 }

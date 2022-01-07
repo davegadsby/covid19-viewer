@@ -1,8 +1,8 @@
 <div class="nav">
-    <mat-selection-list #countryList [multiple]="false">
-      <mat-list-option *ngFor="let country of countries" [value]="country"
-       [routerLink]="[ '../../country', country]" routerLinkActive="active" queryParamsHandling="preserve">
-        {{country}}
-      </mat-list-option>
-    </mat-selection-list>
-  </div>
+  <mat-selection-list #countryList [multiple]="false">
+    <mat-list-option *ngFor="let country of countries" [value]="country" [routerLink]="[ '../../country', country]"
+      routerLinkActive="active" queryParamsHandling="preserve">
+      {{country}}
+    </mat-list-option>
+  </mat-selection-list>
+</div>

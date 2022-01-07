@@ -1,8 +1,10 @@
+<!-- Navbar-->
 <mat-toolbar color="primary" id="main-toolbar">
+
   <mat-toolbar-row id="top-toolbar" class="mat-elevation-z6">
     <h5 id="title">Covid-19 Viewer</h5>
-    <a mat-button  [routerLink]="'/dashboard'" routerLinkActive="header-item-selected"> Dashboard</a>
-    <a mat-button  [routerLink]="'/country'" routerLinkActive="header-item-selected"> Details</a>
+    <a mat-button [routerLink]="'/dashboard'" routerLinkActive="header-item-selected"> Dashboard</a>
+    <a mat-button [routerLink]="'/country'" routerLinkActive="header-item-selected"> Details</a>
   </mat-toolbar-row>
 
   <mat-toolbar-row id="tools" *ngIf="mobileQuery.matches; else largeTools">
@@ -10,6 +12,7 @@
     </router-outlet>
   </mat-toolbar-row>
 
+  <!-- Toolbar for large displays -->
   <ng-template #largeTools>
     <mat-toolbar-row id="tools">
       <router-outlet (activate)="showToolbar = true" (deactivate)="showToolbar = false" name="tools">
@@ -29,21 +32,28 @@
 <ng-template #largeDisplay>
   <div class="container">
     <mat-sidenav-container [autosize]="showNav">
+      
+      <!-- Primary nav panel-->
       <mat-sidenav mode="side" [opened]="showNav">
         <nav id="nav">
           <router-outlet (activate)="showNav = true" (deactivate)="showNav = false" name='nav'></router-outlet>
         </nav>
       </mat-sidenav>
+
+      <!-- Detail panel-->
       <mat-sidenav mode="side" [opened]="showDetail" position="end">
         <aside id="detail">
           <router-outlet (activate)="showDetail = true" (deactivate)="showDetail = false" name='detail'></router-outlet>
         </aside>
       </mat-sidenav>
+
       <mat-sidenav-content>
         <article>
+          <!-- Main router-outlet for displaying content -->
           <router-outlet></router-outlet>
         </article>
       </mat-sidenav-content>
+
     </mat-sidenav-container>
   </div>
 </ng-template>

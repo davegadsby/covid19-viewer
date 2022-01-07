@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSelectionListChange } from '@angular/material/list';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
-import { map, Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'lib-all-countries',
@@ -14,12 +11,9 @@ export class AllCountriesComponent implements OnInit {
 
   countries!: string[];
 
-  constructor(private activatedRoute: ActivatedRoute ) {
-
-  }
+  constructor(private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    console.log(this.activatedRoute.snapshot.data);
     this.countries = this.activatedRoute.snapshot.data['countries'] as string[];
   }
 }

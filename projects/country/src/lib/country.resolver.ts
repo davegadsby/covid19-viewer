@@ -9,6 +9,6 @@ export class CountryResolver implements Resolve<Observable<string[]>>{
     constructor(private service: CountryService) { }
 
     resolve(): Observable<string[]> {
-        return this.service.get();
+        return this.service.getAll();
     }
 }

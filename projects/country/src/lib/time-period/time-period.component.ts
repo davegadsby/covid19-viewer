@@ -16,7 +16,7 @@ export class TimePeriodComponent implements OnInit {
   date!: string;
   timeSpans: string[] = [
     'All time',
-    'Last year' ,
+    'Last year',
     'Last 6 months',
     'Last 3 months',
     'Last month'
@@ -26,9 +26,9 @@ export class TimePeriodComponent implements OnInit {
   constructor(private route: ActivatedRoute) {
 
     this.route.queryParams.subscribe(params => {
-      if(params['period']) {
+      if (params['period']) {
         const timeSpan = this.timeSpans.find(t => t === params['period']);
-        if(timeSpan) {
+        if (timeSpan) {
           this.selectedTimeSpan = timeSpan;
         }
       }

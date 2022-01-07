@@ -1,12 +1,12 @@
 <div class="nav">
     <form class="example-form">
-        <mat-form-field class="example-full-width" >
+        <mat-form-field class="example-full-width">
             <mat-select [(value)]="selectedCountry">
-                <mat-option *ngFor="let option of options" [value]="option"
-                [routerLink]="[ '../../country', option]" routerLinkActive="active" queryParamsHandling="preserve">
+                <mat-option *ngFor="let option of options" [value]="option" [routerLink]="[ '../../country', option]"
+                    routerLinkActive="active" queryParamsHandling="preserve">
                     {{option}}
                 </mat-option>
-              </mat-select>
+            </mat-select>
         </mat-form-field>
     </form>
 </div>
